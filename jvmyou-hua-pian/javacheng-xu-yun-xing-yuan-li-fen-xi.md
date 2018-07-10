@@ -53,39 +53,25 @@
 2. 元数据。对应于Java源码中声明与常量的信息。包含类/继承的超类/实现的接口的声明信息、域与方法声明信息和常量池
 3. 方法信息。对应Java源码中语句和表达式对应的信息。包含字节码、异常处理器表、求值栈与局部变量区大小、求值栈的类型记录、调试符号信息
 
-* **类加载机制**
+4. **类加载机制**
 
 JVM的类加载是通过ClassLoader及其子类来完成的，类的层次关系和加载顺序可以由下图来描述：
 
 ![](/assets/import-02.png)
 
+
+
 类加载器的作用是加载类文件到内存，比如编写一个HelloWord.java程序，然后通过javac编译程class文件，那么怎么才能加载到内存中被执行呢？ClassLoader承担的就是这个责任，那不可能随便建立一个.class文件就能被加载的，Class Loader加载的class文件是有格式要求的（具体要求详见《JVM Specification》，目前我还是看不懂），ClassLoader只管加载，只要符合文件结构就加载，至于说能不能运行，则不是它负责，那是由Execution Engine负责的。
-
-
-
- 
-
-
 
 ①   Bootstrap ClassLoader
 
-
-
 负责加载$JAVA\_HOME中jre/lib/rt.jar里所有的class到堆类存的永久存储区，由C++实现，不是ClassLoader子类
-
-
 
 ②Extension ClassLoader
 
-
-
 负责加载java平台中扩展功能的一些jar包，包括$JAVA\_HOME中jre/lib/\*.jar或-Djava.ext.dirs指定目录下的jar包
 
-
-
 ③App ClassLoader
-
-
 
 负责记载classpath中指定的jar包及目录中class
 
@@ -95,9 +81,7 @@ JVM的类加载是通过ClassLoader及其子类来完成的，类的层次关系
 
 加载过程中会先检查类是否被已加载，检查顺序是自底向上，从Custom ClassLoader到BootStrap ClassLoader逐层检查，只要某个classloader已加载就视为已加载此类，保证此类只所有ClassLoader加载一次。而加载的顺序是自顶向下，也就是由上层来逐层尝试加载此类。
 
-
-
 * **类执行机制**
 
-
+JVM是基于栈的体系结构来执行class字节码的。线程创建后，都会产生程序计数器（PC）和栈（Stack），程序计数器存放下一条要执行的指令在方法内的偏移量，栈中存放一个个栈帧，每个栈帧对应着每个方法的每次调用，而栈帧又是有局部变量区和操作数栈两部分组成，局部变量区用于存放方法中的局部变量和参数，操作数栈中用于存放方法执行过程中产生的中间结果。栈的结构如下图所示：
 
