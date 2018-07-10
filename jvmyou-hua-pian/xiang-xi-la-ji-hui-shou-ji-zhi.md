@@ -1,7 +1,5 @@
 # 详细垃圾回收机制
 
-**垃圾回收机制**
-
 JVM分别对新生代和旧生代采用不同的垃圾回收机制
 
 新生代的GC：
@@ -10,7 +8,9 @@ JVM分别对新生代和旧生代采用不同的垃圾回收机制
 
 用java visualVM来查看，能明显观察到新生代满了后，会把对象转移到旧生代，然后清空继续装载，当旧生代也满了后，就会报outofmemory的异常，如下图所示：
 
-![](http://hi.csdn.net/attachment/201009/26/0_128547393900Yy.gif)
+![](/assets/import-07.png)
+
+
 
 在执行机制上JVM提供了串行GC（Serial GC）、并行回收GC（Parallel Scavenge）和并行GC（ParNew）
 
@@ -32,8 +32,6 @@ JVM分别对新生代和旧生代采用不同的垃圾回收机制
 
 以上各种GC机制是需要组合使用的，指定方式由下表所示：
 
-
-
 | 指定方式 | 新生代GC方式 | 旧生代GC方式 |
 | :--- | :--- | :--- |
 | -XX:+UseSerialGC | 串行GC | 串行GC |
@@ -44,6 +42,5 @@ JVM分别对新生代和旧生代采用不同的垃圾回收机制
 | -XX:+ UseConeMarkSweepGC-XX:+UseParNewGC | 串行GC | 并发GC |
 |  | 不支持的组合 | 1、-XX:+UseParNewGC -XX:+UseParallelOldGC2、-XX:+UseParNewGC -XX:+UseSerialGC |
 
-  
 
 
