@@ -1,5 +1,9 @@
 # JVM性能调优——理论篇
 
+
+
+### ![](/assets/import-optimize.png)
+
 ### 一、JVM何时会抛出OutOfMemoryException？
 
 * JVM98%的时间都花费在内存回收
@@ -178,4 +182,10 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 **2、减少full GC的执行时间；**
 
 为了达到上面的目的，一般地，你需要做的事情有：[详细垃圾回收机制](/jvmyou-hua-pian/xiang-xi-la-ji-hui-shou-ji-zhi.md)——减少GC开销的措施
+
+
+
+
+
+
 
