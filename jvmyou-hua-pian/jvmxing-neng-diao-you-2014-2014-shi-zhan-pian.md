@@ -93,29 +93,23 @@ GC为了释放很小的空间却耗费了太多的时间，其原因一般有两
 
 ![](http://dl2.iteye.com/upload/attachment/0101/0366/af00bbf9-50dc-3127-a917-e78aced45e01.png)
 
-
-
 该应用的堆区设置只有768m，而机器内存有2g，机器上只跑这一个java应用，没有其他需要占用内存的地方。另外，这个应用比较大，需要占用的内存也比较多；
 
 笔者通过上面的情况判断，只需要改变堆中各区域的大小设置即可，于是改成下面的情况：
-
-
 
 ![](http://dl2.iteye.com/upload/attachment/0101/0368/196da884-1c12-3b4e-9d5a-08300587d5e4.png)
 
 跟踪运行情况发现，相关异常没有再出现；
 
-
-
-**实例2：**（http://www.360doc.com/content/13/0305/10/15643\_269388816.shtml）
+**实例2：**（[http://www.360doc.com/content/13/0305/10/15643\_269388816.shtml）](http://www.360doc.com/content/13/0305/10/15643_269388816.shtml）)
 
 一个服务系统，**经常出现卡顿，分析原因，发现Full GC时间太长**：
 
 jstat -gcutil:
 
-S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
+S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
 
-12.16 0.00 5.18 63.78 20.32  54   2.047 5     6.946  8.993 
+12.16 0.00 5.18 63.78 20.32  54   2.047 5     6.946  8.993
 
 分析上面的数据，发现Young GC执行了54次，耗时2.047秒，每次Young GC耗时37ms，在正常范围，**而Full GC执行了5次，耗时6.946秒，每次平均1.389s，数据显示出来的问题是：Full GC耗时较长**，分析该系统的是指发现，NewRatio=9，也就是说，新生代和老生代大小之比为1:9，这就是问题的原因：
 
@@ -134,14 +128,55 @@ S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
 | jhat | JVM Heap Dump Browser，用于分析heapdump文件，它会建立一个HTTP/HTML服务器，让用户在浏览器上看到分析结果。 |
 | jstack | Stack Trace for Java, 显示虚拟机的线程快照 |
 
-
-
 **实例3：**
 
-一应用在性能测试过程中，发现内存占用率很高，Full GC频繁，使用sudo -u admin -H  jmap -dump:format=b,file=文件名.hprof pid 来dump内存，生成dump文件，并使用Eclipse下的mat差距进行分析，发现：
+一应用在性能测试过程中，发现内存占用率很高，Full GC频繁，使用sudo -u admin -H  jmap -dump:format=b,file=文件名.hprof pid 来dump内存，生成dump文件，并使用Eclipse下的mat差距进行分析，发现：
 
-![](http://dl2.iteye.com/upload/attachment/0101/0370/a61f0f4e-9d89-35a9-b7c9-501b52b2de08.png)  
-
+![](http://dl2.iteye.com/upload/attachment/0101/0370/a61f0f4e-9d89-35a9-b7c9-501b52b2de08.png)
 
 从图中可以看出，这个线程存在问题，队列LinkedBlockingQueue所引用的大量对象并未释放，导致整个线程占用内存高达378m，此时通知开发人员进行代码优化，将相关对象释放掉即可。
+
+
+
+实例4：在Tomcat下优化JVM参数
+
+1、 tomcat7安装目录\bin\catalina.bat \(linux修改的是catalina.sh文件\)
+
+添加如下语句：
+
+JAVA\_OPTS=-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms1024m -Xmx1024m -Xss1m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=256M -XX:MaxPermSize=512m
+
+-XX:+DisableExplicitGC
+
+2、查看tomcat的JVM内存
+
+tomcat7中默认没有用户的，我们首先要添加用户有：
+
+修改tomcat7安装目录下\conf\tomcat-users.xml
+
+password是可以自由定义的。 
+
+3、检查webapps下是否有Manager目录，一般发布时我们都把这个目录删除了，现在看来删除早了，在调试期要保留啊！ 
+
+4、访问地址： http://localhost:8080/manager/status 查看内存配置情况，经测试-Xms512m -Xmx512m与-Xms1024m -Xmx1024m内存使用情况不一样，使用1024的时候有一项内存使用99%。所以看来这个设置多少与实际机器有关，需要Manager进行查看后确定。
+
+ 5、在启动Tomcat中发现，有同志发布程序时把我们在TOMCAT7中引用的外部JAR包重复发布到LIB目录下了，我们以后在发布时要检查LIB下是不是包括 el-api.jar jsp-api servlet-api,特别注意的是最后一个servlet-api，我发现两个项目都把它拷贝到了LIB目录下！！被我删除了。 6、使用TOMAT的连接池：
+
+说明： maxThreads：最大线程数 300 minSpareThreads：初始化建立的线程数 50 maxThreads：一旦线程超过这个值，Tomcat就会关闭不再需要的线程 maxIdleTime：为最大空闲时间、单位为毫秒。 executor为线程池的名字，对应Executor 中的name属性；Connector 标签中不再有maxThreads的设置。 如果tomcat不使用线程池则基本配置如下：
+
+修改Tomcat的/conf目录下面的server.xml文件，针对端口为8080的连接器添加如下参数：
+
+ 1. connectionTimeout：连接失效时间，单位为毫秒、默认为60s、这里设置为30s，如果用户请求在30s内未能进入请求队列，视为本次连接失败。 
+
+2. keepAliveTimeout：连接的存活时间，默认和connectionTimeout一致，这里可以设为15s、这意味着15s之后本次连接关闭. 如果页面需要加载大量图片、js等静态资源，需要将参数适当调大一点、以免多次创建TCP连接。 
+
+3. enableLookups：是否对连接到服务器的远程机器查询其DNS主机名，一般情况下这并不必要，因此设为false即可。 
+
+4. URIEncoding：设置URL参数的编码格式为UTF-8编码，默认为ISO-8859-1编码。 
+
+5. maxHttpHeaderSize：设置HTTP请求、响应的头部内容大小，默认为8192字节\(8k\)，此处设置为32768字节\(32k\)、和Nginx的设置保持一致。 
+
+6. maxThreads：最大线程数、用于处理用户请求的线程数目，默认为200、此处设置为300 
+
+7. acceptCount：用户请求等候队列的大小，默认为100、此处设置为200 Linux系统默认一个进程能够创建的最大线程数为1024、因此对高并发应用需要进行Linux内核调优，至此文件server.xml修改后的内容如下所示：吻 再次登录查看状态，
 
