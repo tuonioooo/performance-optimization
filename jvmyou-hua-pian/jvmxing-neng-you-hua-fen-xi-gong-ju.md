@@ -2,13 +2,13 @@
 
 ## 一、JDK自带的分析工具
 
-1. jps：虚拟机进程状况工具    2
-2. jstat：虚拟机统计信息监视工具    2
-3. jinfo：java配置信息工具    3
-4. jhat：虚拟机堆转储快照分析工具    3
-5. jmap：内存映像工具    3
-6. jstack：java堆栈跟踪工具    3
-7. VisualVM：多合一故障处理工具    3
+1. jps：虚拟机进程状况工具    2
+2. jstat：虚拟机统计信息监视工具    2
+3. jinfo：java配置信息工具    3
+4. jhat：虚拟机堆转储快照分析工具    3
+5. jmap：内存映像工具    3
+6. jstack：java堆栈跟踪工具    3
+7. VisualVM：多合一故障处理工具    3
 8. jconsole
 9. jvisualvm
 
@@ -18,8 +18,6 @@
 
 1. Memory Analyzer Tool（MAT）Eclipse插件
 2. GChisto
-
-
 
 ## 三、常用工具介绍
 
@@ -34,7 +32,7 @@ Jconsole（Java Monitoring and Management Console）是从java5开始，在JDK�
 ```
 -Dcom.sun.management.jmxremote.port
 =6969  
- 
+
 -Dcom.sun.management.jmxremote.ssl
 =
 false
@@ -58,13 +56,10 @@ false
 ![](http://www.ityouknow.com/assets/images/2017/jvm/jconsole04.jpg)
 
 * 类，主要展示已加载类的相关信息。
- 
+
 * VM 概要，展示JVM所有信息总览，包括基本信息、线程相关、堆相关、操作系统、VM参数等。
- 
+
 * Mbean,查看Mbean的属性，方法等。
-
-  
-
 
 ### VisualVM {#visualvm}
 
@@ -74,7 +69,7 @@ VisualVM 是一个工具，它提供了一个可视界面，用于查看 Java �
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm.jpg)
 
-VisualVM 是javajdk自带的最牛逼的调优工具了吧，也是我平时使用最多调优工具，几乎涉及了jvm调优的方方面面。同样是在jdk/bin目录下面双击jvisualvm.exe既可使用，启动起来后和jconsole 一样同样可以选择本地和远程，如果需要监控远程同样需要配置相关参数，主界面如下；
+_**VisualVM 是javajdk自带的最牛逼的调优工具了吧**_，也是我平时使用最多调优工具，几乎涉及了jvm调优的方方面面。同样是在jdk/bin目录下面双击jvisualvm.exe既可使用，启动起来后和jconsole 一样同样可以选择本地和远程，如果需要监控远程同样需要配置相关参数，主界面如下；
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm01.jpg)
 
@@ -110,13 +105,7 @@ Visual GC 是常常使用的一个功能，可以明显的看到年轻代、老�
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm07.jpg)
 
-  
-
-
 ## 第三方调优工具 {#第三方调优工具}
-
-  
-
 
 ### MAT {#mat}
 
@@ -160,9 +149,6 @@ MAT以eclipse 插件的形式来安装，具体的安装过程就不在描述了
 
 以上只是一个初级的介绍，mat还有更强大的使用，比如对比堆内存，在生产环境中往往为了定位问题，每隔几分钟dump出一下内存快照，随后在对比不同时间的堆内存的变化来发现问题。
 
-  
-
-
 ### GChisto {#gchisto}
 
 GChisto是一款专业分析gc日志的工具，可以通过gc日志来分析：Minor GC、full gc的时间、频率等等，通过列表、报表、图表等不同的形式来反应gc的情况。虽然界面略显粗糙，但是功能还是不错的。
@@ -182,9 +168,6 @@ GChisto是一款专业分析gc日志的工具，可以通过gc日志来分析：
 ![](http://www.ityouknow.com/assets/images/2017/jvm/g3.jpg)
 
 不过这款工具已经不再维护，不能识别最新jdk的日志文件。
-
-  
-
 
 ### gcviewer {#gcviewer}
 
