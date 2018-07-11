@@ -101,11 +101,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 * minEvictableIdleTimeMillis：该参数设置每个连接的空闲时间，超过这个时间连接将被关闭
 * timeBetweenEvictionRunsMillis：后台线程的运行周期，用来检测过期连接
 * maxActive：最大能分配的连接数
-* maxIdle：最大空闲数，当连接使用完毕后发现连接数大于maxIdle，连接将被直接关闭。只有initialSize 
-  &lt;
-   x 
-  &lt;
-   maxIdle的连接将被定期检测是否超期。这个参数主要用来在峰值访问时提高吞吐量。
+* maxIdle：最大空闲数，当连接使用完毕后发现连接数大于maxIdle，连接将被直接关闭。只有initialSize &lt;x &lt;maxIdle的连接将被定期检测是否超期。这个参数主要用来在峰值访问时提高吞吐量。
 * initialSize是如何保持的？经过研究代码发现，BasicDataSource会关闭所有超期的连接，然后再打开initialSize数量的连接，这个特性与minEvictableIdleTimeMillis、timeBetweenEvictionRunsMillis一起保证了所有超期的initialSize连接都会被重新连接，从而避免了Mysql长时间无动作会断掉连接的问题。
 
 **  3.JVM参数**
