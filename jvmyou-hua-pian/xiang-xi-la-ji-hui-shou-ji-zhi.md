@@ -61,7 +61,7 @@ gc即垃圾收集机制是指jvm用于释放那些不再使用的对象所占用
 | -XX:+UseParNewGC | 并行GC | 串行GC |
 | -XX:+UseParallelOldGC | 并行回收GC | 并行GC |
 | -XX:+ UseConeMarkSweepGC-XX:+UseParNewGC | 串行GC | 并发GC |
-|  | 不支持的组合 | 1、-XX:+UseParNewGC -XX:+UseParallelOldGC2、-XX:+UseParNewGC -XX:+UseSerialGC |
+| 不支持的组合 |  | 1、-XX:+UseParNewGC -XX:+UseParallelOldGC2、-XX:+UseParNewGC -XX:+UseSerialGC |
 
 ### 
 
