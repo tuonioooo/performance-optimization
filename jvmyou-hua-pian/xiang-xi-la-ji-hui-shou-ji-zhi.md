@@ -87,6 +87,26 @@ GC调优是很重要的。找到最佳的分代堆空间是一个迭代的过程
 | -XX:MaxTenuringThreshold=0 | 设置垃圾最大年龄（在年轻代的存活次数）。如果设置为0的话，则年轻代对象不经过Survivor区直接进入年老代。对于年老代比较多的应用，可以提高效率；如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概率。根据被海量访问的动态Web应用之特点，其内存要么被缓存起来以减少直接访问DB，要么被快速回收以支持高并发海量请求，因此其内存对象在年轻代存活多次意义不大，可以直接进入年老代，根据实际应用效果，在这里设置此值为0。 |
 | -XX:+UseConcMarkSweepGC | 设置年老代为并发收集。CMS（ConcMarkSweepGC）收集的目标是尽量减少应用的暂停时间，减少Full GC发生的几率，利用和应用程序线程并发的垃圾回收线程来标记清除年老代内存，适用于应用中存在比较多的长生命周期对象的情况。 |
 
+* ### **JVM命令行辅助参数**
+
+| -XX:-CITime | 打印消耗在JIT编译的时间。 |
+| :--- | :--- |
+| -XX:ErrorFile=./hs\_err\_pid.log | 保存错误日志或数据到指定文件中。 |
+| -XX:HeapDumpPath=./java\_pid.hprof | 指定Dump堆内存时的路径。 |
+| -XX:-HeapDumpOnOutOfMemoryError | 当首次遭遇内存溢出时Dump出此时的堆内存。 |
+| -XX:OnError=";" | 出现致命ERROR后运行自定义命令。 |
+| -XX:OnOutOfMemoryError=";" | 当首次遭遇内存溢出时执行自定义命令。 |
+| -XX:-PrintClassHistogram | 按下 Ctrl+Break 后打印堆内存中类实例的柱状信息，同JDK的 jmap -histo 命令。 |
+| -XX:-PrintConcurrentLocks | 按下 Ctrl+Break 后打印线程栈中并发锁的相关信息，同JDK的 jstack -l 命令。 |
+| -XX:-PrintCompilation | 当一个方法被编译时打印相关信息。 |
+| -XX:-PrintGC | 每次GC时打印相关信息。 |
+| -XX:-PrintGCDetails | 每次GC时打印详细信息。 |
+| -XX:-PrintGCTimeStamps | 打印每次GC的时间戳。 |
+| -XX:-TraceClassLoading | 跟踪类的加载信息。 |
+| -XX:-TraceClassLoadingPreorder | 跟踪被引用到的所有类的加载信息。 |
+| -XX:-TraceClassResolution | 跟踪常量池。 |
+| -XX:-TraceClassUnloading | 跟踪类的卸载信息。 |
+
 * ### **算法分析**
 
 Java语言规范没有明确地说明JVM使用哪种垃圾回收算法，但是任何一种垃圾收集算法一般要做2件基本的事情：（1）发现无用信息对象；（2）回收被无用对象占用的内存空间，使该空间可被程序再次使用。

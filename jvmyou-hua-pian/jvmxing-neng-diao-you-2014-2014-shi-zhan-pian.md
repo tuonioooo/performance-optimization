@@ -71,3 +71,17 @@ PS Perm Generation
 
 结果是比较健康的。
 
+## 二、-Xmn，-XX:NewSize/-XX:MaxNewSize，-XX:NewRatio 3组参数都可以影响年轻代的大小，混合使用的情况下，优先级是什么？
+
+如下：
+
+1. 高优先级：-XX:NewSize/-XX:MaxNewSize 
+2. 中优先级：-Xmn（默认等效  -Xmn=-XX:NewSize=-XX:MaxNewSize=?） 
+3. 低优先级：-XX:NewRatio 
+
+
+
+
+
+
+
