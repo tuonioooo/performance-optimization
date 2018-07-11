@@ -136,8 +136,6 @@ S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
 
 从图中可以看出，这个线程存在问题，队列LinkedBlockingQueue所引用的大量对象并未释放，导致整个线程占用内存高达378m，此时通知开发人员进行代码优化，将相关对象释放掉即可。
 
-
-
 实例4：在Tomcat下优化JVM参数
 
 1、 tomcat7安装目录\bin\catalina.bat \(linux修改的是catalina.sh文件\)
@@ -154,29 +152,31 @@ tomcat7中默认没有用户的，我们首先要添加用户有：
 
 修改tomcat7安装目录下\conf\tomcat-users.xml
 
-password是可以自由定义的。 
+password是可以自由定义的。
 
-3、检查webapps下是否有Manager目录，一般发布时我们都把这个目录删除了，现在看来删除早了，在调试期要保留啊！ 
+3、检查webapps下是否有Manager目录，一般发布时我们都把这个目录删除了，现在看来删除早了，在调试期要保留啊！
 
-4、访问地址： http://localhost:8080/manager/status 查看内存配置情况，经测试-Xms512m -Xmx512m与-Xms1024m -Xmx1024m内存使用情况不一样，使用1024的时候有一项内存使用99%。所以看来这个设置多少与实际机器有关，需要Manager进行查看后确定。
+4、访问地址： [http://localhost:8080/manager/status](http://localhost:8080/manager/status) 查看内存配置情况，经测试-Xms512m -Xmx512m与-Xms1024m -Xmx1024m内存使用情况不一样，使用1024的时候有一项内存使用99%。所以看来这个设置多少与实际机器有关，需要Manager进行查看后确定。
 
- 5、在启动Tomcat中发现，有同志发布程序时把我们在TOMCAT7中引用的外部JAR包重复发布到LIB目录下了，我们以后在发布时要检查LIB下是不是包括 el-api.jar jsp-api servlet-api,特别注意的是最后一个servlet-api，我发现两个项目都把它拷贝到了LIB目录下！！被我删除了。 6、使用TOMAT的连接池：
+5、在启动Tomcat中发现，有同志发布程序时把我们在TOMCAT7中引用的外部JAR包重复发布到LIB目录下了，我们以后在发布时要检查LIB下是不是包括 el-api.jar jsp-api servlet-api,特别注意的是最后一个servlet-api，我发现两个项目都把它拷贝到了LIB目录下！！被我删除了。 6、使用TOMAT的连接池：
 
 说明： maxThreads：最大线程数 300 minSpareThreads：初始化建立的线程数 50 maxThreads：一旦线程超过这个值，Tomcat就会关闭不再需要的线程 maxIdleTime：为最大空闲时间、单位为毫秒。 executor为线程池的名字，对应Executor 中的name属性；Connector 标签中不再有maxThreads的设置。 如果tomcat不使用线程池则基本配置如下：
 
 修改Tomcat的/conf目录下面的server.xml文件，针对端口为8080的连接器添加如下参数：
 
- 1. connectionTimeout：连接失效时间，单位为毫秒、默认为60s、这里设置为30s，如果用户请求在30s内未能进入请求队列，视为本次连接失败。 
+1. connectionTimeout：连接失效时间，单位为毫秒、默认为60s、这里设置为30s，如果用户请求在30s内未能进入请求队列，视为本次连接失败。 
 
-2. keepAliveTimeout：连接的存活时间，默认和connectionTimeout一致，这里可以设为15s、这意味着15s之后本次连接关闭. 如果页面需要加载大量图片、js等静态资源，需要将参数适当调大一点、以免多次创建TCP连接。 
+1. keepAliveTimeout：连接的存活时间，默认和connectionTimeout一致，这里可以设为15s、这意味着15s之后本次连接关闭. 如果页面需要加载大量图片、js等静态资源，需要将参数适当调大一点、以免多次创建TCP连接。
 
-3. enableLookups：是否对连接到服务器的远程机器查询其DNS主机名，一般情况下这并不必要，因此设为false即可。 
+2. enableLookups：是否对连接到服务器的远程机器查询其DNS主机名，一般情况下这并不必要，因此设为false即可。
 
-4. URIEncoding：设置URL参数的编码格式为UTF-8编码，默认为ISO-8859-1编码。 
+3. URIEncoding：设置URL参数的编码格式为UTF-8编码，默认为ISO-8859-1编码。
 
-5. maxHttpHeaderSize：设置HTTP请求、响应的头部内容大小，默认为8192字节\(8k\)，此处设置为32768字节\(32k\)、和Nginx的设置保持一致。 
+4. maxHttpHeaderSize：设置HTTP请求、响应的头部内容大小，默认为8192字节\(8k\)，此处设置为32768字节\(32k\)、和Nginx的设置保持一致。
 
-6. maxThreads：最大线程数、用于处理用户请求的线程数目，默认为200、此处设置为300 
+5. maxThreads：最大线程数、用于处理用户请求的线程数目，默认为200、此处设置为300
 
-7. acceptCount：用户请求等候队列的大小，默认为100、此处设置为200 Linux系统默认一个进程能够创建的最大线程数为1024、因此对高并发应用需要进行Linux内核调优，至此文件server.xml修改后的内容如下所示：吻 再次登录查看状态，
+6. acceptCount：用户请求等候队列的大小，默认为100、此处设置为200 Linux系统默认一个进程能够创建的最大线程数为1024、因此对高并发应用需要进行Linux内核调优，至此文件server.xml修改后的内容如下所示：吻 再次登录查看状态，
+
+
 
