@@ -83,11 +83,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 
 其实我们的要求很简单，希望线程池能跟连接池一样，能设置最小线程数、最大线程数，当最小数&lt;任务&lt;最大数时，应该分配新的线程处理；当任务&gt;最大数时，应该等待有空闲线程再处理该任务。
 
-
-
 但线程池的设计思路是，任务应该放到Queue中，当Queue放不下时再考虑用新线程处理，如果Queue满且无法派生新线程，就拒绝该任务。设计导致“先放等执行”、“放不下再执行”、“拒绝不等待”。所以，根据不同的Queue参数，要提高吞吐量不能一味地增大maximumPoolSize。
-
-
 
 当然，要达到我们的目标，必须对线程池进行一定的封装，幸运的是ThreadPoolExecutor中留了足够的自定义接口以帮助我们达到目标。我们封装的方式是：
 
@@ -96,11 +92,11 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 
 **  2.连接池（org.apache.commons.dbcp.BasicDataSource）**
 
-```
 在使用org.apache.commons.dbcp.BasicDataSource的时候，因为之前采用了默认配置，所以当访问量大时，通过JMX观察到很多Tomcat线程都阻塞在BasicDataSource使用的Apache ObjectPool的锁上，直接原因当时是因为BasicDataSource连接池的最大连接数设置的太小，默认的BasicDataSource配置，仅使用8个最大连接。
 
+
+
 我还观察到一个问题，当较长的时间不访问系统，比如2天，DB上的Mysql会断掉所以的连接，导致连接池中缓存的连接不能用。为了解决这些问题，我们充分研究了BasicDataSource，发现了一些优化的点：
-```
 
 * Mysql默认支持100个链接，所以每个连接池的配置要根据集群中的机器数进行，如有2台服务器，可每个设置为60
 * initialSize：参数是一直打开的连接数
@@ -150,6 +146,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 * -XX:+PrintGCDetails
 
 * -XX:+PrintGCTimeStamps
+
 * -Xloggc:/usr/aaa/dump/heap\_trace.txt
 
   通过下面参数可以控制OutOfMemoryError时打印堆的信息
