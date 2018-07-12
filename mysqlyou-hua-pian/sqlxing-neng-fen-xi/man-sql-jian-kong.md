@@ -14,9 +14,114 @@
 
 **技术细节：**
 
-* 修改my.cnf
+* **进入MySql 查询是否开了慢查询**
 
-> general\_log=1 \#开启mysql执行sql的日志
+> show variables like 'slow\_query%'
+>
+> ![](/assets/import-slowsql-01.png)
+>
+> 参数说明：
+>
+> * slow\_query\_log 慢查询开启状态  OFF 未开启 ON 为开启
+> * slow\_query\_log\_file 慢查询日志存放的位置（这个目录需要MySQL的运行帐号的可写权限，一般设置为MySQL的数据存放目录）默认为localhost-slow.log
+
+
+
+* **查看慢查询超时时间**
+
+> show variables like 'long%';
+>
+> ![](/assets/import-showsql-02.png)
+>
+> 参数说明：
+>
+> * long\_query\_time 查询超过多少秒才记录   默认10秒 修改为1秒
+
+* **修改方法一（不推荐）**
+
+方法一：优点临时开启慢查询，不需要重启数据库  缺点：MySql 重启慢查询失效
+
+默认情况下slow\_query\_log的值为OFF，表示慢查询日志是禁用的，可以通过设置slow\_query\_log的值来开启，如下所示开启慢查询日志，1表示开启，0表示关闭。
+
+```
+mysql> show variables like '%slow_query_log%';
+ 
++---------------------+--------------------------------------------+
+ 
+| Variable_name    | Value                   |
+ 
++---------------------+--------------------------------------------+
+ 
+| slow_query_log   | OFF                    |
+ 
+| slow_query_log_file | /application/mysql/data/localhost-slow.log |
+ 
++---------------------+--------------------------------------------+
+ 
+2 rows in set (0.01 sec)
+```
+
+输入 语句修改（重启后失效，建议在/etc/my.cnf中修改永久生效）
+
+```
+mysql> set global slow_query_log=1;
+ 
+Query OK, 0 rows affected (0.11 sec)
+```
+
+再次查看
+
+```
+mysql> show variables like '%slow_query_log%';
+ 
++---------------------+--------------------------------------------+
+ 
+| Variable_name    | Value                   |
+ 
++---------------------+--------------------------------------------+
+ 
+| slow_query_log   | ON                     |
+ 
+| slow_query_log_file | /application/mysql/data/localhost-slow.log |
+ 
++---------------------+--------------------------------------------+
+ 
+2 rows in set (0.00 sec)
+```
+
+* **修改方法二**
+
+修改 MySql 慢查询，通过修改my.cnf修改配置参数，设置之后，重启永久生效
+
+```
+[root@localhost mysql]# find / -type f -name "my.cnf"
+/application/mysql/mysql-test/suite/rpl_ndb/my.cnf
+/application/mysql/mysql-test/suite/rpl/extension/bhs/my.cnf
+/application/mysql/mysql-test/suite/rpl/my.cnf
+/application/mysql/mysql-test/suite/ndb_binlog/my.cnf
+/application/mysql/mysql-test/suite/ndb_team/my.cnf
+/application/mysql/mysql-test/suite/ndb_rpl/my.cnf
+/application/mysql/mysql-test/suite/ndb_big/my.cnf
+/application/mysql/mysql-test/suite/federated/my.cnf
+/application/mysql/mysql-test/suite/ndb/my.cnf
+/application/mysql/my.cnf
+```
+
+vi /application/mysql/my.cnf ，找到 \[mysqld\] 下面添加如下参数：
+
+```
+slow_query_log =1
+ 
+slow_query_log_file=/application/mysql/data/localhost-slow.log
+ 
+long_query_time = 1
+```
+
+修改完重启MySQL
+
+参数说明：
+
+> general\_log=1 \#开启mysql执行sql的日志
 >
 > general\_log\_file=/log/general.log \#将mysql执行sql日志记录到指定文件中
 >
@@ -31,8 +136,6 @@
 > \#如果没有配置general\_log\_file，那么general\_log就只会写表了
 >
 > \#如果没有配置slow\_query\_log\_file，那么slow\_query\_log就只会写表了
-
-
 
 
 
