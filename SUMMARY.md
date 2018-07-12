@@ -13,6 +13,10 @@
   * [MySQL优化篇](mysqlyou-hua-pian.md)
     * [数据库存储的引擎分析](mysqlyou-hua-pian/shu-ju-ku-cun-chu-de-yin-qing-fen-xi.md)
     * [详解索引及优化](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua.md)
+      * [索引优缺点](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/suo-yin-you-que-dian.md)
+      * 索引种类
+      * 不走索引的情况
+      * 索引实现分析
     * [SQL性能分析](mysqlyou-hua-pian/sqlxing-neng-fen-xi.md)
       * [执行计划](mysqlyou-hua-pian/sqlxing-neng-fen-xi/zhi-xing-ji-hua.md)
       * [慢SQL监控](mysqlyou-hua-pian/sqlxing-neng-fen-xi/man-sql-jian-kong.md)
