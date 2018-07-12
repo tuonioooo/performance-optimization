@@ -24,9 +24,46 @@ select_type | table | type | possible_keys | key | key_len | ref | rows | Extra
 
 字段解释：
 
+*  select\_type   显示查询的方式，比如，子查询、聚合查询、union查询
+
+> * SIMPLE：简单的SELECT，不实用UNION或者子查询。
+>
+> explain select \* from user where uid=1;
+>
+> ![](/assets/import-selecttype-01.png)
+>
+> * PRIMARY：最外层SELECT。
+>
+> explain select \* from \(select \* from user where uid=1\)b
+>
+> ![](/assets/import-selecttype-02.png)
+>
+> * UNION：第二层，在SELECT之后使用了UNION。
+>
+> explain select \* from user where uid=1 union select \* from user where uid=2
+>
+> ![](/assets/import-selecttype-03.png)
+>
+> * DEPENDENT UNION：UNION语句中的第二个SELECT，依赖于外部子查询。
+>
+> explain select \* from user x where uid in \(select uid from user y union select uid from user z where uid&lt;5\)
+> ![](/assets/import-selecttype-04.png)
+> * SUBQUERY：子查询中的第一个SELECT
+>
+> explain select \* from groups where gid =\(select gid from user where uid=1\)
+> ![](/assets/import-selecttype-05.png)
+> * DEPENDENT SUBQUERY：子查询中的第一个SELECT，取决于外面的查询。
+>
+> explain select \* fromuser where uid in \(select uid from user where uid&lt;4\)
+> ![](/assets/import-selecttype-06.png)
+
+
+
+
+
 * table 显示这一行的数据是关于哪张表的
 
-* type 这是重要的列，显示连接使用了何种类型。从最好到最差的连接类型为const、eq\_reg、ref、range、indexhe和ALL
+* type 这是重要的列，显示连接使用了何种类型。从最好到最差的连接类型为const、eq\_reg、ref、range、index和ALL
 
 > 说明：不同连接类型的解释（按照效率高低的顺序排序）
 >
@@ -71,6 +108,14 @@ select_type | table | type | possible_keys | key | key_len | ref | rows | Extra
 > Using temporary ：看到这个的时候，查询需要优化了。这里，mysql需要创建一个临时表来存储结果，这通常发生在对不同的列集进行ORDER BY上，而不是GROUP BY上。
 >
 > Where used ：使用了WHERE从句来限制哪些行将与下一张表匹配或者是返回给用户。如果不想返回表中的全部行，并且连接类型ALL或index，这就会发生，或者是查询有问题。
+
+
+
+总结：
+
+> 因此，弄明白了explain语法返回的每一项结果，我们就能知道查询大致的运行时间了，如果查询里没有用到索引、或者需要扫描的行过多，那么可以感到明显的延迟。因此需要改变查询方式或者新建索引。
+>
+> mysql中的explain语法可以帮助我们改写查询，优化表的结构和索引的设置，从而最大地提高查询效率。当然，在大规模数据量时，索引的建立和维护的代价也是很高的，往往需要较长的时间和较大的空间，如果在不同的列组合上建立索引，空间的开销会更大。因此索引最好设置在需要经常查询的字段中。
 
 
 
