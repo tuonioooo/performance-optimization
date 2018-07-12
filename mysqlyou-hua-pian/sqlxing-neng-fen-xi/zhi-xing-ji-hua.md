@@ -12,55 +12,40 @@
 
 MySql提供了EXPLAIN语法用来进行查询分析，在SQL语句前加一个"EXPLAIN"即可。比如我们要分析如下SQL语句：
 
-explain select \* from table where table.id = 1
+```
+explain select * from table where table.id = 1
+```
 
 运行上面的sql语句后你会看到，下面的表头信息：
 
-select\_type \| table \| type \| possible\_keys \| key \| key\_len \| ref \| rows \| Extra
-
-EXPLAIN列的解释
-
-table  
-显示这一行的数据是关于哪张表的
-
-type  
-这是重要的列，显示连接使用了何种类型。从最好到最差的连接类型为const、eq\_reg、ref、range、indexhe和ALL
+```
+select_type | table | type | possible_keys | key | key_len | ref | rows | Extra
+```
 
 
 
-说明：不同连接类型的解释（按照效率高低的顺序排序）
 
-system：表只有一行：system表。这是const连接类型的特殊情况。
 
-const ：表中的一个记录的最大值能够匹配这个查询（索引可以是主键或惟一索引）。因为只有一行，这个值实际就是常数，因为MYSQL先读这个值然后把它当做常数来对待。
+字段解释：
 
-eq\_ref：在连接中，MYSQL在查询时，从前面的表中，对每一个记录的联合都从表中读取一个记录，它在查询使用了索引为主键或惟一键的全部时使用。
+<table>
+        <tr>
+            <td >字段</td>
+            <td>含义</td>
+        </tr>
+        <tr>
+            <td colspan="2">table</td>
+            <td>显示这一行的数据是关于哪张表的</td>
+        </tr>
+        <tr>
+            <td colspan="2">type</td>
+            <td>system</td>
+            <td>表只有一行：system表。这是const连接类型的特殊情况。</td>
+            <td>这是重要的列，显示连接使用了何种类型。从最好到最差的连接类型为const、eq_reg、ref、range、indexhe和ALL 说明：不同连接类型的解释（按照效率高低的顺序排序）</td>
+        </tr>
+    </table>
 
-ref：这个连接类型只有在查询使用了不是惟一或主键的键或者是这些类型的部分（比如，利用最左边前缀）时发生。对于之前的表的每一个行联合，全部记录都将从表中读出。这个类型严重依赖于根据索引匹配的记录多少—越少越好。
 
-range：这个连接类型使用索引返回一个范围中的行，比如使用&gt;或&lt;查找东西时发生的情况。
-
-index：这个连接类型对前面的表中的每一个记录联合进行完全扫描（比ALL更好，因为索引一般小于表数据）。
-
-ALL：这个连接类型对于前面的每一个记录联合进行完全扫描，这一般比较糟糕，应该尽量避免。
-
-possible\_keys  
-显示可能应用在这张表中的索引。如果为空，没有可能的索引。可以为相关的域从WHERE语句中选择一个合适的语句
-
-key  
-实际使用的索引。如果为NULL，则没有使用索引。很少的情况下，MYSQL会选择优化不足的索引。这种情况下，可以在SELECT语句中使用USE INDEX（indexname）来强制使用一个索引或者用IGNORE INDEX（indexname）来强制MYSQL忽略索引
-
-key\_len  
-使用的索引的长度。在不损失精确性的情况下，长度越短越好
-
-ref  
-显示索引的哪一列被使用了，如果可能的话，是一个常数
-
-rows  
-MYSQL认为必须检查的用来返回请求数据的行数
-
-Extra  
-关于MYSQL如何解析查询的额外信息。将在表4.3中讨论，但这里可以看到的坏的例子是Using temporary和Using filesort，意思MYSQL根本不能使用索引，结果是检索会很慢
 
 
 
