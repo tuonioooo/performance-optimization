@@ -20,5 +20,5 @@
       * [业务层面优化](mysqlyou-hua-pian/sqlyu-ju-fen-xi/ye-wu-ceng-mian-you-hua.md)
       * [数据库层面优化](mysqlyou-hua-pian/sqlyu-ju-fen-xi/shu-ju-ku-ceng-mian-you-hua.md)
       * [SQL语句拆分简单sql](mysqlyou-hua-pian/sqlyu-ju-fen-xi/sqlyu-ju-chai-fen-jian-dan-sql.md)
-    * 理解MYSQL底层B+ tree的机制
+    * [理解MYSQL底层B+ tree的机制](mysqlyou-hua-pian/li-jie-mysql-di-ceng-b-+-tree-de-ji-zhi.md)
 
