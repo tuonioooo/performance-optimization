@@ -15,7 +15,7 @@
     * 详解索引及优化
     * [SQL性能分析](mysqlyou-hua-pian/sqlxing-neng-fen-xi.md)
       * [执行计划](mysqlyou-hua-pian/sqlxing-neng-fen-xi/zhi-xing-ji-hua.md)
-      * 慢SQL监控
+      * [慢SQL监控](mysqlyou-hua-pian/sqlxing-neng-fen-xi/man-sql-jian-kong.md)
     * SQL语句分析
     * 理解MYSQL底层B+ tree的机制
 
