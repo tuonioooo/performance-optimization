@@ -15,7 +15,7 @@
     * [详解索引及优化](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua.md)
       * [索引优缺点](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/suo-yin-you-que-dian.md)
       * [索引种类](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/suo-yin-zhong-lei.md)
-      * 不走索引的情况
+      * [不走索引的情况](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/bu-zou-suo-yin-de-qing-kuang.md)
       * 索引实现分析
     * [SQL性能分析](mysqlyou-hua-pian/sqlxing-neng-fen-xi.md)
       * [执行计划](mysqlyou-hua-pian/sqlxing-neng-fen-xi/zhi-xing-ji-hua.md)
