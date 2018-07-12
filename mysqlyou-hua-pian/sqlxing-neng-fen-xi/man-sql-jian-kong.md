@@ -16,11 +16,23 @@
 
 * 修改my.cnf
 
-```
-general_log=1 #开启mysql执行sql的日志
-slow_query_log=1 #开启mysql慢sql的日志
-log_output=table,File #日志输出会写表，也会写日志文件，为了便于程序去统计，所以最好写表
-```
+> general\_log=1 \#开启mysql执行sql的日志
+>
+> general\_log\_file=/log/general.log \#将mysql执行sql日志记录到指定文件中
+>
+> slow\_query\_log=1 \#开启mysql慢sql的日志
+>
+> slow\_query\_log\_file=/log/slow.log \#将慢查询日志记录到指定文件中
+>
+> log\_output=table,File \#日志输出会写表，也会写日志文件，为了便于程序去统计，所以最好写表
+>
+> long\_query\_time=1 \#设置mysql的慢查询为超过1s的查询
+>
+> \#如果没有配置general\_log\_file，那么general\_log就只会写表了
+>
+> \#如果没有配置slow\_query\_log\_file，那么slow\_query\_log就只会写表了
+
+
 
 
 
