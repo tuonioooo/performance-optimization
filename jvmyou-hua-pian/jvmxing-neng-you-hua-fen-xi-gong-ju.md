@@ -25,7 +25,7 @@ Jconsole（Java Monitoring and Management Console）是从java5开始，在JDK�
 
 直接在jdk/bin目录下点击jconsole.exe即可启动，界面如下:
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jconsole01.jpg)
+![](/assets/import-jconsole.png)
 
 在弹出的框中可以选择本机的监控本机的java应用，也可以选择远程的java服务来监控，如果监控远程服务需要在tomcat启动脚本中添加如下代码：
 
@@ -45,15 +45,15 @@ false
 
 * 概述，以图表的方式显示出堆内存使用量，活动线程数，已加载的类，CUP占用率的折线图，可以非常清晰的观察在程序执行过程中的变动情况。
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jconsole02.jpg)
+![](/assets/import-jconsole-02.png)
 
 * 内存，主要展示了内存的使用情况，同时可以查看堆和非堆内存的变化值对比，也可以点击执行GC来处罚GC的执行
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jconsole03.jpg)
+![](/assets/import-jconsole-03.png)
 
 * 线程，主界面展示线程数的活动数和峰值，同时点击左下方线程可以查看线程的详细信息，比如线程的状态是什么，堆栈内容等，同时也可以点击“检测死锁”来检查线程之间是否有死锁的情况。
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jconsole04.jpg)
+![](/assets/import-jconsole-04.png)
 
 * 类，主要展示已加载类的相关信息。
 
@@ -67,15 +67,15 @@ false
 
 VisualVM 是一个工具，它提供了一个可视界面，用于查看 Java 虚拟机 \(Java Virtual Machine, JVM\) 上运行的基于 Java 技术的应用程序（Java 应用程序）的详细信息。VisualVM 对 Java Development Kit \(JDK\) 工具所检索的 JVM 软件相关数据进行组织，并通过一种使您可以快速查看有关多个 Java 应用程序的数据的方式提供该信息。您可以查看本地应用程序以及远程主机上运行的应用程序的相关数据。此外，还可以捕获有关 JVM 软件实例的数据，并将该数据保存到本地系统，以供后期查看或与其他用户共享。
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm.jpg)
+![](/assets/import-jvisualvm-01.png)
 
 _**VisualVM 是javajdk自带的最牛逼的调优工具了吧**_，也是我平时使用最多调优工具，几乎涉及了jvm调优的方方面面。同样是在jdk/bin目录下面双击jvisualvm.exe既可使用，启动起来后和jconsole 一样同样可以选择本地和远程，如果需要监控远程同样需要配置相关参数，主界面如下；
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm01.jpg)
+![](/assets/import-jvisualvm.png)
 
 VisualVM可以根据需要安装不同的插件，每个插件的关注点都不同，有的主要监控GC，有的主要监控内存，有的监控线程等。
 
-![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm02.jpg)
+![](/assets/import-jvisualvm-02.png)
 
 如何安装：
 
