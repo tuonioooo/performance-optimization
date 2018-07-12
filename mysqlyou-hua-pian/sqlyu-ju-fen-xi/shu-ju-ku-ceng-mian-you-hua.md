@@ -69,7 +69,6 @@ sort_buffer_size=32M
 thread_cache_size=120
 #默认为60
 query_cache_size=32M
-
 ```
 
 ```
