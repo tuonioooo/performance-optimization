@@ -34,6 +34,7 @@
 > 参数说明：
 >
 > * long\_query\_time 查询超过多少秒才记录   默认10秒 修改为1秒
+> * set global long\_query\_time=1; 修改之后，先关闭数据库连接，再重新连接，再次查询就可以看到实际上是修改了的。
 
 * **修改方法一（不推荐）**
 
@@ -135,9 +136,80 @@ long_query_time = 1
 >
 > \#如果没有配置slow\_query\_log\_file，那么slow\_query\_log就只会写表了
 
-
-
 * **查看、测试**
 
+**插入一条测试慢查询**
 
+```
+mysql> select sleep(2);
+ 
++----------+
+ 
+| sleep(2) |
+ 
++----------+
+ 
+|    0 |
+ 
++----------+
+ 
+1 row in set (2.00 sec)
+```
+
+**查看慢查询日志**
+
+```
+[root@localhost data]# cat /application/mysql/data/localhost-slow.log
+ 
+/application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
+ 
+Tcp port: 3306 Unix socket: /tmp/mysql.sock
+ 
+Time         Id Command  Argument
+ 
+/application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
+ 
+Tcp port: 3306 Unix socket: /tmp/mysql.sock
+ 
+Time         Id Command  Argument
+ 
+/application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
+ 
+Tcp port: 3306 Unix socket: /tmp/mysql.sock
+ 
+Time         Id Command  Argument
+ 
+# Time: 170605 6:37:00
+ 
+# User@Host: root[root] @ localhost []
+ 
+# Query_time: 2.000835 Lock_time: 0.000000 Rows_sent: 1 Rows_examined: 0
+ 
+SET timestamp=1496615820;
+ 
+select sleep(2);
+```
+
+**通过MySQL命令查看有多少慢查询**
+
+```
+mysql> show global status like '%Slow_queries%';
+ 
++---------------+-------+
+ 
+| Variable_name | Value |
+ 
++---------------+-------+
+ 
+| Slow_queries | 1   |
+ 
++---------------+-------+
+ 
+1 row in set (0.00 sec)
+
+```
+
+**日志分析工具mysqldumpslow**
+
+在生产环境中，如果要手工分析日志，查找、分析SQL，显然是个体力活，MySQL提供了日志分析工具mysqldumpslow
 
