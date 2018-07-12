@@ -30,11 +30,11 @@ select_type | table | type | possible_keys | key | key_len | ref | rows | Extra
 
 <table>
         <tr>
-            <td >字段</td>
+            <td>字段</td>
             <td>含义</td>
         </tr>
         <tr>
-            <td colspan="2">table</td>
+            <td>table</td>
             <td>显示这一行的数据是关于哪张表的</td>
         </tr>
         <tr>
