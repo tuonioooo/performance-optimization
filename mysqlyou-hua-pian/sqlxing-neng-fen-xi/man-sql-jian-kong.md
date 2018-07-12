@@ -142,17 +142,17 @@ long_query_time = 1
 
 ```
 mysql> select sleep(2);
- 
+
 +----------+
- 
+
 | sleep(2) |
- 
+
 +----------+
- 
+
 |    0 |
- 
+
 +----------+
- 
+
 1 row in set (2.00 sec)
 ```
 
@@ -160,33 +160,33 @@ mysql> select sleep(2);
 
 ```
 [root@localhost data]# cat /application/mysql/data/localhost-slow.log
- 
+
 /application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
- 
+
 Tcp port: 3306 Unix socket: /tmp/mysql.sock
- 
+
 Time         Id Command  Argument
- 
+
 /application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
- 
+
 Tcp port: 3306 Unix socket: /tmp/mysql.sock
- 
+
 Time         Id Command  Argument
- 
+
 /application/mysql/bin/mysqld, Version: 5.5.51-log (MySQL Community Server (GPL)). started with:
- 
+
 Tcp port: 3306 Unix socket: /tmp/mysql.sock
- 
+
 Time         Id Command  Argument
- 
+
 # Time: 170605 6:37:00
- 
+
 # User@Host: root[root] @ localhost []
- 
+
 # Query_time: 2.000835 Lock_time: 0.000000 Rows_sent: 1 Rows_examined: 0
- 
+
 SET timestamp=1496615820;
- 
+
 select sleep(2);
 ```
 
@@ -194,22 +194,40 @@ select sleep(2);
 
 ```
 mysql> show global status like '%Slow_queries%';
- 
-+---------------+-------+
- 
-| Variable_name | Value |
- 
-+---------------+-------+
- 
-| Slow_queries | 1   |
- 
-+---------------+-------+
- 
-1 row in set (0.00 sec)
 
++---------------+-------+
+
+| Variable_name | Value |
+
++---------------+-------+
+
+| Slow_queries | 1   |
+
++---------------+-------+
+
+1 row in set (0.00 sec)
 ```
 
 **日志分析工具mysqldumpslow**
 
 在生产环境中，如果要手工分析日志，查找、分析SQL，显然是个体力活，MySQL提供了日志分析工具mysqldumpslow
+
+如：
+
+```
+
+/path/mysqldumpslow -s c -t 10 /database/mysql/slow-log
+这会输出记录次数最多的10条SQL语句，其中：
+
+-s, 是表示按照何种方式排序，c、t、l、r分别是按照记录次数、时间、查询时间、返回的记录数来排序，ac、at、al、ar，表示相应的倒叙；
+-t, 是top n的意思，即为返回前面多少条的数据；
+-g, 后边可以写一个正则匹配模式，大小写不敏感的；
+比如
+/path/mysqldumpslow -s r -t 10 /database/mysql/slow-log
+得到返回记录集最多的10个查询。
+/path/mysqldumpslow -s t -t 10 -g “left join” /database/mysql/slow-log
+得到按照时间排序的前10条里面含有左连接的查询语句。
+```
+
+
 
