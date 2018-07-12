@@ -22,10 +22,8 @@
 >
 > 参数说明：
 >
-> * slow\_query\_log 慢查询开启状态  OFF 未开启 ON 为开启
+> * slow\_query\_log 慢查询开启状态  OFF 未开启 ON 为开启
 > * slow\_query\_log\_file 慢查询日志存放的位置（这个目录需要MySQL的运行帐号的可写权限，一般设置为MySQL的数据存放目录）默认为localhost-slow.log
-
-
 
 * **查看慢查询超时时间**
 
@@ -35,29 +33,29 @@
 >
 > 参数说明：
 >
-> * long\_query\_time 查询超过多少秒才记录   默认10秒 修改为1秒
+> * long\_query\_time 查询超过多少秒才记录   默认10秒 修改为1秒
 
 * **修改方法一（不推荐）**
 
-方法一：优点临时开启慢查询，不需要重启数据库  缺点：MySql 重启慢查询失效
+方法一：优点临时开启慢查询，不需要重启数据库  缺点：MySql 重启慢查询失效
 
 默认情况下slow\_query\_log的值为OFF，表示慢查询日志是禁用的，可以通过设置slow\_query\_log的值来开启，如下所示开启慢查询日志，1表示开启，0表示关闭。
 
 ```
 mysql> show variables like '%slow_query_log%';
- 
+
 +---------------------+--------------------------------------------+
- 
+
 | Variable_name    | Value                   |
- 
+
 +---------------------+--------------------------------------------+
- 
+
 | slow_query_log   | OFF                    |
- 
+
 | slow_query_log_file | /application/mysql/data/localhost-slow.log |
- 
+
 +---------------------+--------------------------------------------+
- 
+
 2 rows in set (0.01 sec)
 ```
 
@@ -65,7 +63,7 @@ mysql> show variables like '%slow_query_log%';
 
 ```
 mysql> set global slow_query_log=1;
- 
+
 Query OK, 0 rows affected (0.11 sec)
 ```
 
@@ -73,19 +71,19 @@ Query OK, 0 rows affected (0.11 sec)
 
 ```
 mysql> show variables like '%slow_query_log%';
- 
+
 +---------------------+--------------------------------------------+
- 
+
 | Variable_name    | Value                   |
- 
+
 +---------------------+--------------------------------------------+
- 
+
 | slow_query_log   | ON                     |
- 
+
 | slow_query_log_file | /application/mysql/data/localhost-slow.log |
- 
+
 +---------------------+--------------------------------------------+
- 
+
 2 rows in set (0.00 sec)
 ```
 
@@ -107,13 +105,13 @@ mysql> show variables like '%slow_query_log%';
 /application/mysql/my.cnf
 ```
 
-vi /application/mysql/my.cnf ，找到 \[mysqld\] 下面添加如下参数：
+* vi /application/mysql/my.cnf ，找到 \[mysqld\] 下面添加如下参数：
 
 ```
 slow_query_log =1
- 
+
 slow_query_log_file=/application/mysql/data/localhost-slow.log
- 
+
 long_query_time = 1
 ```
 
@@ -136,6 +134,10 @@ long_query_time = 1
 > \#如果没有配置general\_log\_file，那么general\_log就只会写表了
 >
 > \#如果没有配置slow\_query\_log\_file，那么slow\_query\_log就只会写表了
+
+
+
+* **查看、测试**
 
 
 
