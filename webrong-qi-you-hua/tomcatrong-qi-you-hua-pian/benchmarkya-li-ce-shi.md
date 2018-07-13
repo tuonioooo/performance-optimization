@@ -205,19 +205,17 @@ hello,world
 ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 ```
 
-  
 POST的文件内容可以通过postman测试接口来查看。
 
-  
 **性能测试得到的最重要的指标就是QPS\(Requests per second\)，反映了接口的并发承受能力，也就是系统的峰值性能。**如果对接口的调用超过了这一限制，就要考虑提升硬件或者做一些优化了。
-
-
 
 参考文档：
 
-      ab参数介绍：[ab - Apache HTTP server benchmarking tool](http://httpd.apache.org/docs/2.4/programs/ab.html)
+  ab参数介绍：[http://httpd.apache.org/docs/2.4/programs/ab.html](http://httpd.apache.org/docs/2.4/programs/ab.html)
 
-      使用ab命令发送一个post请求： [Make a POST request using ab \(apache benchmarking\) on a django server](http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server)
+  使用ab命令发送一个post请求：[http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server](http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server)
 
-      同上：[POSTing multipart/form-data with Apache Bench \(ab\)](http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab)
+  同上：[http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab](http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab)
+
+
 
