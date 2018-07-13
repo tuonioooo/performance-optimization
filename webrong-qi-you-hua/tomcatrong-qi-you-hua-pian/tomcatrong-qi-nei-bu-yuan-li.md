@@ -54,7 +54,7 @@ Engine有一个默认主机，当请求无法匹配到任何一个虚拟主机�
 
 ### Context {#context}
 
-一个Context对应于一个Web应用，一个Web应用由一个或者多个Servlet组成Context在创建的时候将根据配置文件$CATALINA\_HOME/conf/web.xml和$WEBAPP\_HOME/WEB-INF/web.xml载入Servlet类。当Context获得请求时，将在自己的映射表\(mapping table\)中寻找相匹配的Servlet类，如果找到，则执行该类，获得请求的回应，并返回。
+一个Context对应于一个Web应用，一个Web应用由一个或者多个Servlet组成，Context在创建的时候将根据配置文件$CATALINA\_HOME/conf/web.xml和$WEBAPP\_HOME/WEB-INF/web.xml载入Servlet类。当Context获得请求时，将在自己的映射表\(mapping table\)中寻找相匹配的Servlet类，如果找到，则执行该类，获得请求的回应，并返回。
 
 ### Wrapper {#wrapper}
 
@@ -174,7 +174,7 @@ _**声明：**_除了StandardServer, 这个类也是StandardService, StandardEng
 Tomcat的Connector是Coyote connector的一种实现，这是tomcat的官方解释：The Coyote HTTP/1.1 Connector element represents a Connector component that supports the HTTP/1.1 protocol. It enables Catalina to function as a stand-alone web server, in addition to its ability to execute servlets and JSP pages.  
 Tomcat8之后默认使用nio作为接受请求策略，默认在Service启动的时候进行初始化，当然也可以单独启动，在默认的构造函数中会初始化ProtocolHandler
 
-![](https://img-blog.csdn.net/20170302150526227?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat18.png)
 
 tomcat中支持两种协议的连接器：HTTP/1.1与AJP/1.3
 
@@ -182,33 +182,33 @@ HTTP/1.1协议负责建立HTTP连接，web应用通过浏览器访问tomcat服�
 
 AJP/1.3协议负责和其他HTTP服务器建立连接，监听的是8009端口，比如tomcat和apache或者iis集成时需要用到这个连接器。
 
-![](https://img-blog.csdn.net/20170302151012422?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat19.png)
 
 Connector的启动其实就是ProtocolHandler的启动，如下图：
 
-![](https://img-blog.csdn.net/20170302152520161?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat20.png)
 
 ProtocolHandler的类结构如下图：
 
-![](https://img-blog.csdn.net/20170302153301260?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat21.png)
 
 Connector的startInternal方法调用了ProtocolHandle的start方法，这个start方法就在AbstractProtocol中，如下图：
 
-![](https://img-blog.csdn.net/20170302153904961?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat22.png)
 
 经历了这么多，终于快到终点了，这时候又出来了一个EndPoint，不过不要急，这个EndPoint已经算是终点了，EndPoint是咱们Tomcat启动的Socket管理者\(注意：通过类图可以看出AbstractEndpoint已经脱离了Lifecycle和LifecycleListener体系，所以它只是一个简简单单的Socket管理者\)，因为是由他直接启动默认的Nio，在启动的时候先看看类结构图：
 
-![](https://img-blog.csdn.net/20170302154444437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat23.png)
 
 再看一下EndPoint能做什么，看方法就知道了
 
-![](https://img-blog.csdn.net/20170302154549407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat24.png)
 
 createAcceptor、createExecutor等方法都是在初始化EndPoint很重要方法，因为在接收请求的时候，通过Acceptor的接收，经过重重模块，才能一路到达最后的Servlet，这个在后面会有讲到。
 
 那么EndPoint最后的启动，看下图：
 
-![](https://img-blog.csdn.net/20170302155014429?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat25.png)
 
 在这个地方会启动很多的线程，第一次读这段代码的同学可能会有点乱，因为有想过启动线程，现在还有些不知道是为什么启动，这就是tomcat的有意思之处了，因为下一篇我会说到tomcat接收请求的流程，所以在下一篇文章我会详细讲解。
 
