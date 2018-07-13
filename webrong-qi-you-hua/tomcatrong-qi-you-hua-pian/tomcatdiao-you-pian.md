@@ -100,6 +100,8 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 <Connector executor="tomcatThreadPool" port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" connectionTimeout="20000" enableLookups="false" redirectPort="8443" URIEncoding="UTF-8" />
 ```
 
+* **apr：**安装起来最困难,但是从操作系统级别来解决异步的IO问题,大幅度的提高性能.
+
 * ## tomcat中**如何禁止和允许列目录下的文档 **
 
 在{tomcat\_home}/conf/web.xml中，把listings参数配置成false即可，如下：
