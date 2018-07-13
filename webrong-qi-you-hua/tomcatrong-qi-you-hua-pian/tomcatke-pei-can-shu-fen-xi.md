@@ -2,7 +2,7 @@
 
 * ### server.xml配置参数详解
 
-请参官方文档：[http://tomcat.apache.org/tomcat-8.5-doc/config/server.html](http://tomcat.apache.org/tomcat-8.5-doc/config/index.html)
+请参官方文档：[http://tomcat.apache.org/tomcat-8.5-doc/config/server.html](http://tomcat.apache.org/tomcat-8.5-doc/config/index.html)     参数介绍
 
-
+请参官方文档：[http://tomcat.apache.org/tomcat-8.5-doc/config/server.html](http://tomcat.apache.org/tomcat-8.5-doc/config/index.html)      如何配置
 
