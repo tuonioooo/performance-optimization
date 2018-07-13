@@ -131,7 +131,6 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 * ## 一个真实有效的高并发Tomcat优化配置示例：
 
 ```
-
 <Executor name="tomcatThreadPool"        # 配置TOMCAT共享线程池，NAME为名称　
           namePrefix="HTTP-8088-exec-"    # 线程的名字前缀，用于标记线程名称
           prestartminSpareThreads="true"  # executor启动时，是否开启最小的线程数
@@ -146,8 +145,13 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 <Connector port="8088" protocol="org.apache.coyote.http11.Http11NioProtocol"
    connectionTimeout="5000" redirectPort="443" proxyPort="443" executor="tomcatThreadPool"  
    URIEncoding="UTF-8"/> # 采用上面的共享线程池
-
 ```
 
+参考文档：
 
+[http://tomcat.apache.org/tomcat-8.5-doc/config](http://tomcat.apache.org/tomcat-8.5-doc/config/index.html)
+
+[http://tomcat.apache.org/tomcat-8.0-doc/config](#)
+
+[http://tomcat.apache.org/tomcat-7.0-doc/config](#)
 
