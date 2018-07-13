@@ -124,7 +124,6 @@ public void start() throws LifecycleException {
     getConnector();
     server.start();
 }
-
 ```
 
 server的默认实现是StandardServer, start\(\)方法在其父类LifecycleBase中
@@ -137,19 +136,19 @@ _**声明：**_除了StandardServer, 这个类也是StandardService, StandardEng
 
 启动server其实就是启动service容器
 
-![](https://img-blog.csdn.net/20170228144100976?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat10.png)
 
 ### 启动service {#启动service}
 
 启动service其实就是启动engine容器和connector容器
 
-![](https://img-blog.csdn.net/20170228150009863?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat11.png)
 
 ### 启动Engine {#启动engine}
 
 启动engine其实就是启动host容器\(多线程\)
 
-![](https://img-blog.csdn.net/20170228150316955?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat12.png)
 
 ### 启动Host {#启动host}
 
@@ -157,20 +156,18 @@ _**声明：**_除了StandardServer, 这个类也是StandardService, StandardEng
 
 ### 启动Context {#启动context}
 
-启动Wrapper
-
-![](https://img-blog.csdn.net/20170228151706259?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+启动Wrapper![](/assets/import-tomcat13.png)
 
 下面看一下非常重要的一个方法 loadServlet:
 
-![](https://img-blog.csdn.net/20170228161235737?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat14.png)
 
-![](https://img-blog.csdn.net/20170228161349613?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat15.png)
 
-![](https://img-blog.csdn.net/20170228161615411?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat16.png)
 
 它基本上描述了对 Servlet 的操作，当装载了 Servlet 后就会调用 Servlet 的 init 方法，同时会传一个 StandardWrapperFacade 对象给 Servlet，这个对象包装了 StandardWrapper，ServletConfig 与它们的关系图如下：  
-![](https://img-blog.csdn.net/20170228162512212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VueXVuamllMzYx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
+![](/assets/import-tomcat17.png)
 
 ### 启动Connector {#启动connector}
 
