@@ -29,7 +29,7 @@
 * [WEB容器优化篇](webrong-qi-you-hua.md)
   * [Tomcat容器优化篇](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian.md)
     * [Tomcat容器内部原理](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian/tomcatrong-qi-nei-bu-yuan-li.md)
-    * Tomcat可配参数分析
+    * [Tomcat可配参数分析](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian/tomcatke-pei-can-shu-fen-xi.md)
     * Benchmark压力测试
     * Tomcat调优实战
   * [WEB程序容器结构剖析](webrong-qi-you-hua/webcheng-xu-rong-qi-jie-gou-pou-xi.md)
