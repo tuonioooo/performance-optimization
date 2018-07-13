@@ -100,9 +100,9 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 <Connector executor="tomcatThreadPool" port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" connectionTimeout="20000" enableLookups="false" redirectPort="8443" URIEncoding="UTF-8" />
 ```
 
-* ## tomcat中**如何禁止和允许列目录下的文档 **
+* ## tomcat中**如何禁止和允许列目录下的文档 **
 
-在{tomcat\_home}/conf/web.xml中，把listings参数配置成false即可，如下： 
+在{tomcat\_home}/conf/web.xml中，把listings参数配置成false即可，如下：
 
 ```
 <servlet> 
@@ -112,7 +112,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 <param-value>false</param-value> 
 </init-param> 
 ... 
-</servlet> 
+</servlet>
 ```
 
 * ## tomcat中**如何禁止和允许主机或IP地址访问**
@@ -125,7 +125,28 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
   <Valve className="org.apache.catalina.valves.RemoteAddrValve" 
          deny="192.168.1.*"/> 
   ... 
-</Host> 
+</Host>
+```
+
+* ## 一个真实有效的高并发Tomcat优化配置示例：
+
+```
+
+<Executor name="tomcatThreadPool"        # 配置TOMCAT共享线程池，NAME为名称　
+          namePrefix="HTTP-8088-exec-"    # 线程的名字前缀，用于标记线程名称
+          prestartminSpareThreads="true"  # executor启动时，是否开启最小的线程数
+          maxThreads="5000"               # 允许的最大线程池里的线程数量，默认是200，大的并发应该设置的高一些，这里设置可以支持到5000并发
+          maxQueueSize="100"              # 任务队列上限
+          minSpareThreads="50"            # 最小的保持活跃的线程数量，默认是25.这个要根据负载情况自行调整了。太小了就影响反应速度，太大了白白占用资源
+          maxIdleTime="10000"             # 超过最小活跃线程数量的线程，如果空闲时间超过这个设置后，会被关别。默认是1分钟。
+ />
+```
+
+```
+<Connector port="8088" protocol="org.apache.coyote.http11.Http11NioProtocol"
+   connectionTimeout="5000" redirectPort="443" proxyPort="443" executor="tomcatThreadPool"  
+   URIEncoding="UTF-8"/> # 采用上面的共享线程池
+
 ```
 
 
