@@ -9,7 +9,7 @@
   * [JVM性能调优——理论篇](jvmyou-hua-pian/jvmxing-neng-diao-you-2014-2014-li-lun-pian.md)
   * [JVM性能调优——实战篇](jvmyou-hua-pian/jvmxing-neng-diao-you-2014-2014-shi-zhan-pian.md)
   * [JVM性能优化分析工具](jvmyou-hua-pian/jvmxing-neng-you-hua-fen-xi-gong-ju.md)
-* SQL优化篇
+* [SQL优化篇](sqlyou-hua-pian.md)
   * [MySQL优化篇](mysqlyou-hua-pian.md)
     * [数据库存储的引擎分析](mysqlyou-hua-pian/shu-ju-ku-cun-chu-de-yin-qing-fen-xi.md)
     * [详解索引及优化](mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua.md)
