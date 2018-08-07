@@ -26,9 +26,13 @@ MySQL目前安装，用的是MySQL默认的最大支持配置。拷贝的是my-h
 
 **          back\_log=500**
 
-| back\_log值指出在MySQL暂时停止回答新请求之前的短时间内多少个请求可以被存在堆栈中。也就是说，如果MySql的连接数据达到max\_connections时，新来的请求将会被存在堆栈中，以等待某一连接释放资源，该堆栈的数量即back\_log，如果等待连接的数量超过back\_log，将不被授予连接资源。将会报：unauthenticated user \| xxx.xxx.xxx.xxx \| NULL \| Connect \| NULL \| login \| NULL 的待连接进程时.back\_log值不能超过TCP/IP连接的侦听队列的大小。若超过则无效，查看当前系统的TCP/IP连接的侦听队列的大小命令：cat /proc/sys/net/ipv4/tcp\_max\_syn\_backlog目前系统为1024。对于Linux系统推荐设置为小于512的整数。修改系统内核参数，）[http://www.51testing.com/html/64/n-810764.html查看mysql](http://www.51testing.com/html/64/n-810764.html查看mysql) 当前系统默认back\_log值，命令：show variables like 'back\_log'; 查看当前数量 |
-| :--- |
-
+> back\_log值指出在MySQL暂时停止回答新请求之前的短时间内多少个请求可以被存在堆栈中。也就是说，如果MySql的连接数据达到max\_connections时，新来的请求将会被存在堆栈中，以等待某一连接释放资源，该堆栈的数量即back\_log，如果等待连接的数量超过back\_log，将不被授予连接资源。将会报：unauthenticated user \| xxx.xxx.xxx.xxx \| NULL \| Connect \| NULL \| login \| NULL 的待连接进程时.
+>
+> back\_log值不能超过TCP/IP连接的侦听队列的大小。若超过则无效，查看当前系统的TCP/IP连接的侦听队列的大小命令：cat /proc/sys/net/ipv4/tcp\_max\_syn\_backlog目前系统为1024。对于Linux系统推荐设置为小于512的整数。
+>
+> 修改系统内核参数，）http://www.51testing.com/html/64/n-810764.html
+>
+> 查看mysql 当前系统默认back\_log值，命令：show variables like 'back\_log'; 查看当前数量
 
 ###### 4.1.2修改wait\_timeout参数值，由默认的8小时，修改为30分钟。\(本次不用\)
 
@@ -101,7 +105,7 @@ default-storage-engine= InnoDB\(设置InnoDB类型，另外还可以设置MyISAM
 **4.2.1.1：key\_buffer\_size,本系统目前为384M,可修改为400M**
 
 ```
-key\_buffer\_size=400M
+key_buffer_size=400M
 ```
 
 | key\_buffer\_size是用于索引块的缓冲区大小，增加它可得到更好处理的索引\(对所有读和多重写\)，对MyISAM\(MySQL表存储的一种类型，可以百度等查看详情\)表性能影响最大的一个参数。如果你使它太大，系统将开始换页并且真的变慢了。严格说是它决定了数据库索引处理的速度，尤其是索引读的速度。对于内存在4GB左右的服务器该参数可设置为256M或384M.怎么才能知道key\_buffer\_size的设置是否合理呢，一般可以检查状态值Key\_read\_requests和Key\_reads   ，比例key\_reads / key\_read\_requests应该尽可能的低，比如1:100，1:1000 ，1:10000。其值可以用以下命令查得：show status like 'key\_read%';比如查看系统当前key\_read和key\_read\_request值为：+-------------------+-------+\| Variable\_name     \| Value \|+-------------------+-------+\| Key\_read\_requests \| 28535 \|\| Key\_reads         \| 269   \|+-------------------+-------+可知道有28535个请求，有269个请求在内存中没有找到直接从硬盘读取索引.未命中缓存的概率为：0.94%=269/28535\*100%.  一般未命中概率在0.1之下比较好。目前已远远大于0.1，证明效果不好。若命中率在0.01以下，则建议适当的修改key\_buffer\_size值。[http://dbahacker.com/mysql/innodb-myisam-compare\(\[InnoDB与MyISAM的六大区别\]\(http://dbahacker.com/mysql/innodb-myisam-compare\)\)http://kb.cnblogs.com/page/99810/（查看存储引擎介绍）MyISAM、InnoDB、MyISAM](http://dbahacker.com/mysql/innodb-myisam-compare%28[InnoDB与MyISAM的六大区别]%28http://dbahacker.com/mysql/innodb-myisam-compare%29%29http://kb.cnblogs.com/page/99810/（查看存储引擎介绍）MyISAM、InnoDB、MyISAM) Merge引擎、InnoDB、memory\(heap\)、archive |
@@ -201,4 +205,12 @@ thread\_cache\_size=64
 
 
 三思而后行！
+
+
+
+## 参考
+
+[https://www.2cto.com/database/201711/695306.html](https://www.2cto.com/database/201711/695306.html)
+
+[https://www.cnblogs.com/angryprogrammer/p/6667741.html](https://www.cnblogs.com/angryprogrammer/p/6667741.html)
 
