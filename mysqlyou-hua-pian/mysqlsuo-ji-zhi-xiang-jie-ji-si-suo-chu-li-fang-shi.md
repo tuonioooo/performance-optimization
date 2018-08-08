@@ -50,7 +50,6 @@ a、当concurrent\_insert设置为0时，不允许并发插入。
 b、当concurrent\_insert设置为1时，如果MyISAM表中没有空洞（即表的中间没有被删除的行），MyISAM允许在一个进程读表的同时，另一个进程从表尾插入记录。这也是MySQL的默认设置。  
 c、当concurrent\_insert设置为2时，无论MyISAM表中有没有空洞，都允许在表尾并发插入记录。
 
-  
 **4、MyISAM的锁调度**  
 由于MySQL认为写请求一般比读请求要重要，所以如果有读写请求同时进行的话，MYSQL将会优先执行写操作。这样MyISAM表在进行大量的更新操作时（特别是更新的字段中存在索引的情况下），会造成查询操作很难获得读锁，从而导致查询阻塞。  
 我们可以通过一些设置来调节MyISAM的调度行为：  
@@ -62,11 +61,11 @@ c、通过指定INSERT、UPDATE、DELETE语句的LOW\_PRIORITY属性，降低该
 
 MyISAM使用的是 flock 类的函数，直接就是对整个文件进行锁定（叫做文件锁定），InnoDB使用的是 fcntl 类的函数，可以对文件中局部数据进行锁定（叫做行锁定），所以区别就是在这里。  
 另外MyISAM的数据表是按照单个文件存储的，可以针对单个表文件进行锁定，但是InnoDB是一整个文件，把索引、数据、结构全部保存在 ibdata 文件里，所以必须用行锁定。  
-死锁  
+**死锁**  
 所谓死锁&lt;DeadLock&gt;: 是指两个或两个以上的进程在执行过程中,  
 因争夺资源而造成的一种互相等待的现象,若无外力作用,它们都将无法推进下去.  
 此时称系统处于死锁状态或系统产生了死锁,这些永远在互相等竺的进程称为死锁进程.  
-表级锁不会产生死锁.所以解决死锁主要还是真对于最常用的InnoDB.  
+**表级锁不会产生死锁.所以解决死锁主要还是真对于最常用的InnoDB.**  
 遇到死锁的处理方式
 
 mysql -uxxx -pxxx -h服务器ip --port=服务器端口;（如果服务器设置了ip和端口访问的话，一定要带ip和端口）
@@ -75,7 +74,7 @@ mysql&gt; show processlist; \#查看正在执行的sql （show full processlist;
 mysql&gt; kill id \#杀死sql进程；  
 如果进程太多找不到，就重启mysql吧  
 /ect/init.d/mysql restart  
-或/ect/init.d/mysql stop（如果关不掉就直接kill -9 进程id）  再/ect/init.d/mysql start  
+或/ect/init.d/mysql stop或service mysqld restart（如果关不掉就直接kill -9 进程id）  再/ect/init.d/mysql start  
 去看看mysql日志文件是否保存死锁日志：  
 常用目录：/var/log/mysqld.log；（该目录还有其它相关日志文件就都看看）  
 怎么解决还是要看具体什么问题.
