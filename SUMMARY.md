@@ -28,6 +28,7 @@
     * [理解MYSQL底层B+ tree的机制](mysqlyou-hua-pian/li-jie-mysql-di-ceng-b-+-tree-de-ji-zhi.md)
     * [MySQL性能优化之参数配置](mysqlyou-hua-pian/mysqlxing-neng-you-hua-zhi-can-shu-pei-zhi.md)
     * [MySQL锁机制详解及死锁处理方式](mysqlyou-hua-pian/mysqlsuo-ji-zhi-xiang-jie-ji-si-suo-chu-li-fang-shi.md)
+    * [MYSQL中update的low\_priority](mysqlyou-hua-pian/mysqlzhong-update-de-low-priority.md)
 * [WEB容器优化篇](webrong-qi-you-hua.md)
   * [Tomcat容器优化篇](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian.md)
     * [Tomcat容器内部原理](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian/tomcatrong-qi-nei-bu-yuan-li.md)
