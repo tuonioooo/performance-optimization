@@ -1,6 +1,6 @@
 # MYSQL中update的low\_priority
 
-low\_priority，低优先级  
+**low\_priority，低优先级**  
 UPDATE \[LOW\_PRIORITY\] tbl\_name SET col\_name1=expr1,col\_name2=expr2,...
 
 mysql中update用low\_priority让update不锁定表
@@ -9,8 +9,6 @@ MySQL允许你改变语句调度的优先级，它可以使来自多个客户端
 
 **\(在不要求实时的情况下，写入可以降低跟新插入操作的优先级，确保读的速度。当然，也有更好的方法来完成这个目的，主从，中间缓存，都可以。\)**
 
-
-
 MySQL的默认的调度策略可用总结如下：
 
 · 写入操作优先于读取操作。
@@ -18,8 +16,6 @@ MySQL的默认的调度策略可用总结如下：
 · 对某张数据表的写入操作某一时刻只能发生一次，写入请求按照它们到达的次序来处理。
 
 · 对某张数据表的多个读取操作可以同时地进行。
-
-
 
 MyISAM和MEMORY存储引擎借助于数据表锁来实现这样的调度策略。当客户端访问某张表的时候，首先必须获取它的锁。当客户端完成对表的操作的时候，锁就会被解除。通过LOCK TABLES和UNLOCK TABLES语句来显式地获取或释放锁是可行的，但是在通常情况下，服务器的锁管理器会自动地在需要的时候获取锁，在不再需要的时候释放锁。获取的锁的类型依赖于客户端是写入还是读取操作。
 
@@ -44,4 +40,8 @@ LOW\_PRIORITY关键字影响DELETE、INSERT、LOAD DATA、REPLACE和UPDATE语句
 SELECT查询的HIGH\_PRIORITY（高优先级）关键字也类似。它允许SELECT插入正在等待的写入操作之前，即使在正常情况下写入操作的优先级更高。另外一种影响是，高优先级的SELECT在正常的SELECT语句之前执行，因为这些语句会被写入操作阻塞。
 
 如果你希望所有支持LOW\_PRIORITY选项的语句都默认地按照低优先级来处理，那么请使用--low-priority-updates选项来启动服务器。通过使用INSERT HIGH\_PRIORITY来把INSERT语句提高到正常的写入优先级，可以消除该选项对单个INSERT语句的影响。
+
+## 参考
+
+[http://blog.sina.com.cn/s/blog\_97688f8e0101ehjn.html](http://blog.sina.com.cn/s/blog_97688f8e0101ehjn.html)
 
