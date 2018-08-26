@@ -290,7 +290,7 @@ public class ClassLoaderTest {
 我们获取到了Test.class文件的类加载器，然后打印出来。结果是：
 
 ```
-ClassLoader is:sun.misc.Launcher$AppClassLoader@73d16e93  
+ClassLoader is:sun.misc.Launcher$AppClassLoader@73d16e93
 ```
 
 也就是说明Test.class文件是由AppClassLoader加载的。
@@ -1270,9 +1270,9 @@ new Thread(new Runnable() {
 ![](/assets/import-classloader-11.png)
 
 我们可以得到如下的信息：  
-1. DiskClassLoader1加载成功了SpeakTest.class文件并执行成功。  
+1. DiskClassLoader1加载成功了SpeakTest.class文件并执行成功。（依据上面的委托机制依次加载）  
 2. 子线程的ContextClassLoader是AppClassLoader。  
-3. AppClassLoader加载不了父线程当中已经加载的SpeakTest.class内容。
+3. AppClassLoader依据上面的委托机制加载不到SpeakTest.class内容。
 
 我们修改一下代码，在子线程开头处加上这么一句内容。
 
@@ -1320,9 +1320,7 @@ Thread.currentThread().setContextClassLoader(diskLoader);
 1.[grepcode ClassLoader源码](https://blog.csdn.net/briblue/article/details/www.grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/8u40-b25/java/lang/ClassLoader.java)  
 2.[http://blog.csdn.net/xyang81/article/details/7292380](http://blog.csdn.net/xyang81/article/details/7292380)  
 3.[http://blog.csdn.net/irelandken/article/details/7048817](http://blog.csdn.net/irelandken/article/details/7048817)  
-4.[https://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html](https://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html) 
+4.[https://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html](https://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html)
 
-5.https://blog.csdn.net/briblue/article/details/54973413
-
-
+5.[https://blog.csdn.net/briblue/article/details/54973413](https://blog.csdn.net/briblue/article/details/54973413)
 
