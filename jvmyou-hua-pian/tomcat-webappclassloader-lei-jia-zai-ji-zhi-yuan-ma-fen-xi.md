@@ -34,8 +34,41 @@ protected final Map<String, ResourceEntry> resourceEntries =  new ConcurrentHash
 
 如果第一步没有找到，则继续检查JVM虚拟机中是否加载过该类。
 
-  
-
-
 调用ClassLoader的findLoadedClass\(\) 方法检查
+
+## ![](/assets/import-webclassloader-04.png)
+
+## 第三步
+
+![](/assets/import-webclassloader-05.png)
+
+如果前两步都没有找到，则使用AppClassloader加载该类（也就是当前JVM的ClassPath）
+
+## 第四步 {#第四步}
+
+![](/assets/import-webclassloader-06.png)
+
+如果前三步都没找到，通过filter\(\) 方法检查该类是否在定义的包名下，如果在则通过 StandardClassLoader类加载。
+
+![](/assets/import-webclassloader-07.png)![](/assets/import-webclassloader-08.png)
+
+## ![](/assets/import-webclassloader-09.png)
+
+## 第五步
+
+![](/assets/import-webclassloader-10.png)
+
+如果前4步都没有找到，将由WebappClassLoader来加载。
+
+## ![](/assets/import-webclassloader-11.png)
+
+从当前的工程的Web-INF/classes 目录下查找
+
+![](/assets/import-webclassloader-13.png)如果找到，则创建ResourceEntry对象，保存这个类的元信息，并把他保存在WebappClassLoader的resourceEntries中，便于下次查找。
+
+**本人简书blog地址：**[**http://www.jianshu.com/u/1f0067e24ff8**](http://www.jianshu.com/u/1f0067e24ff8)  
+[**点击这里快速进入简书**](http://www.jianshu.com/u/1f0067e24ff8)
+
+**GIT地址：**[**http://git.oschina.net/brucekankan/**](http://git.oschina.net/brucekankan/)  
+[**点击这里快速进入GIT**](http://git.oschina.net/brucekankan/)
 
