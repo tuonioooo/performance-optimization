@@ -69,7 +69,6 @@ mysql> SELECT * FROM t WHERE i = 1 LOCK IN SHARE MODE;
 +------+
 |    1 |
 +------+
-
 ```
 
 然后，客户B开始一个新事务，新事务是delete表T中的唯一一条数据。
@@ -97,8 +96,6 @@ keep coding, don't settle
 
 ## [InnoDB数据库死锁](https://www.cnblogs.com/lin-xuan/p/5280614.html)
 
-
-
 **目录**
 
 * [场景描述](http://www.cnblogs.com/lin-xuan/p/5280614.html#_label0)
@@ -107,13 +104,9 @@ keep coding, don't settle
 * [延伸：数据库死锁](http://www.cnblogs.com/lin-xuan/p/5280614.html#_label3)
 * [数据库死锁例子](http://www.cnblogs.com/lin-xuan/p/5280614.html#_label4)
 
-
-
 **正文**
 
 [回到顶部](http://www.cnblogs.com/lin-xuan/p/5280614.html#_labelTop)
-
-
 
 ## 场景描述
 
@@ -121,15 +114,11 @@ keep coding, don't settle
 
 [回到顶部](http://www.cnblogs.com/lin-xuan/p/5280614.html#_labelTop)
 
-
-
 ## 问题分析
 
 这个异常并不会影响用户使用，因为数据库遇到死锁会自动回滚并重试。用户的感觉就是操作稍有卡顿。但是监控老是报异常，所以需要解决一下。
 
 [回到顶部](http://www.cnblogs.com/lin-xuan/p/5280614.html#_labelTop)
-
-
 
 ## 解决方法
 
@@ -145,8 +134,6 @@ keep coding, don't settle
 
 [回到顶部](http://www.cnblogs.com/lin-xuan/p/5280614.html#_labelTop)
 
-
-
 ## 延伸：数据库死锁
 
 数据库死锁是事务性数据库 \(如SQL Server, MySql等\)经常遇到的问题。除非数据库死锁问题频繁出现导致用户无法操作，一般情况下数据库死锁问题不严重。在应用程序中进行try-catch就可以。那么数据死锁是如何产生的呢？
@@ -160,8 +147,6 @@ InnoDB实现的是行锁 \(row level lock\)，分为共享锁 \(S\) 和 互斥�
 
 [回到顶部](http://www.cnblogs.com/lin-xuan/p/5280614.html#_labelTop)
 
-
-
 ## 数据库死锁例子
 
 首先，客户A创建一个表T，并向T中插入一条数据，客户A开始一个select事务，所以拿着共享锁S。
@@ -173,27 +158,21 @@ InnoDB实现的是行锁 \(row level lock\)，分为共享锁 \(S\) 和 互斥�
 然后，客户B开始一个新事务，新事务是delete表T中的唯一一条数据。
 
 ```
-mysql
->
- START 
-TRANSACTION
-;
-Query OK, 
-0
- rows affected (
-0.00
- sec)
+mysql> CREATE TABLE t (i INT) ENGINE = InnoDB;
+Query OK, 0 rows affected (1.07 sec)
 
-mysql
->
-DELETE
-FROM
- t 
-WHERE
- i 
-=
-1
-;
+mysql> INSERT INTO t (i) VALUES(1);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM t WHERE i = 1 LOCK IN SHARE MODE;
++------+
+| i    |
++------+
+|    1 |
++------+
 ```
 
 删除操作需要互斥锁 \(X\)，但是互斥锁X和共享锁S是不能相容的。所以删除事务被放到锁请求队列中，客户B阻塞。
@@ -240,9 +219,7 @@ try restarting transaction
 
 参考资料：
 
-http://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html
+[http://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html](http://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html)
 
-http://www.xaprb.com/blog/2006/08/03/a-little-known-way-to-cause-a-database-deadlock/
-
-
+[http://www.xaprb.com/blog/2006/08/03/a-little-known-way-to-cause-a-database-deadlock/](http://www.xaprb.com/blog/2006/08/03/a-little-known-way-to-cause-a-database-deadlock/)
 
