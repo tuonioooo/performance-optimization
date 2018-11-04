@@ -151,12 +151,6 @@ InnoDB实现的是行锁 \(row level lock\)，分为共享锁 \(S\) 和 互斥�
 
 首先，客户A创建一个表T，并向T中插入一条数据，客户A开始一个select事务，所以拿着共享锁S。
 
-按 Ctrl+C 复制代码
-
-按 Ctrl+C 复制代码
-
-然后，客户B开始一个新事务，新事务是delete表T中的唯一一条数据。
-
 ```
 mysql> CREATE TABLE t (i INT) ENGINE = InnoDB;
 Query OK, 0 rows affected (1.07 sec)
@@ -175,32 +169,24 @@ mysql> SELECT * FROM t WHERE i = 1 LOCK IN SHARE MODE;
 +------+
 ```
 
+然后，客户B开始一个新事务，新事务是delete表T中的唯一一条数据。
+
+```
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM t WHERE i = 1;
+```
+
 删除操作需要互斥锁 \(X\)，但是互斥锁X和共享锁S是不能相容的。所以删除事务被放到锁请求队列中，客户B阻塞。
 
 最后，客户A也想删除表T中的那条数据：
 
 ```
-mysql
->
-DELETE
-FROM
- t 
-WHERE
- i 
-=
-1
-;
-ERROR 
-1213
- (
-40001
-): Deadlock found 
-when
- trying 
-to
- get lock;
-try restarting 
-transaction
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM t WHERE i = 1;
 ```
 
 死锁产生了！因为客户A需要锁X来删除行，而客户B拿着锁X并正在等待客户A释放锁S。看看客户A，B的状态：
