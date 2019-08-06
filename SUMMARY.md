@@ -32,6 +32,7 @@
     * [MySQL锁机制详解及死锁处理方式](mysqlyou-hua-pian/mysqlsuo-ji-zhi-xiang-jie-ji-si-suo-chu-li-fang-shi.md)
     * [MYSQL中update的low\_priority](mysqlyou-hua-pian/mysqlzhong-update-de-low-priority.md)
     * [InnoDB数据库死锁](mysqlyou-hua-pian/innodbshu-ju-ku-si-suo.md)
+    * [MySQL中Innodb的聚簇索引和非聚簇索引](mysqlyou-hua-pian/mysqlzhong-innodb-de-ju-cu-suo-yin-he-fei-ju-cu-suo-yin.md)
 * [WEB容器优化篇](webrong-qi-you-hua.md)
   * [Tomcat容器优化篇](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian.md)
     * [Tomcat容器内部原理](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian/tomcatrong-qi-nei-bu-yuan-li.md)
