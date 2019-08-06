@@ -10,6 +10,8 @@
 * [MySQL性能优化之参数配置](/mysqlyou-hua-pian/mysqlxing-neng-you-hua-zhi-can-shu-pei-zhi.md) 
 * [MySQL锁机制详解及死锁处理方式](/mysqlyou-hua-pian/mysqlsuo-ji-zhi-xiang-jie-ji-si-suo-chu-li-fang-shi.md)
 * [MYSQL中update的low\_priority](/mysqlyou-hua-pian/mysqlzhong-update-de-low-priority.md)
+* [MySQL中Innodb的聚簇索引和非聚簇索引](/mysqlyou-hua-pian/mysqlzhong-innodb-de-ju-cu-suo-yin-he-fei-ju-cu-suo-yin.md)
+* [MySQL索引的数据结构及算法原理](/mysqlyou-hua-pian/mysqlsuo-yin-de-shu-ju-jie-gou-ji-suan-fa-yuan-li.md)
 
 
 
