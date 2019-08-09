@@ -36,6 +36,7 @@
     * [B+Tree讲解](mysqlyou-hua-pian/b+treejiang-jie.md)
       * [B-/B+树看 MySQL索引结构](mysqlyou-hua-pian/b-bshu-kan-mysql-suo-yin-jie-gou.md)
       * [B+Tree详细讲解](mysqlyou-hua-pian/b+treexiang-xi-jiang-jie.md)
+      * [MySQL索引背后的数据结构及算法原理](mysqlyou-hua-pian/mysqlsuo-yin-bei-hou-de-shu-ju-jie-gou-ji-suan-fa-yuan-li.md)
     * [MySQL索引的数据结构及算法原理](mysqlyou-hua-pian/mysqlsuo-yin-de-shu-ju-jie-gou-ji-suan-fa-yuan-li.md)
 * [WEB容器优化篇](webrong-qi-you-hua.md)
   * [Tomcat容器优化篇](webrong-qi-you-hua/tomcatrong-qi-you-hua-pian.md)
