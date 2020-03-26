@@ -8,13 +8,13 @@
 
 参数方案：
 
-```
+```text
 -server -XX:PermSize=196m -XX:MaxPermSize=196m -Xmn320m -Xms768m -Xmx1024m
 ```
 
 调优说明：
 
-```
+```text
 -XX:PermSize=196m -XX:MaxPermSize=196m 根据集成构建的特点，大规模的系统编译可能需要加载大量的Java类到内存中，所以预先分配好大量的持久代内存是高效和必要的。
 -Xmn320m 遵循年轻代大小为整个堆的3/8原则。
 -Xms768m -Xmx1024m 根据系统大致能够承受的堆内存大小设置即可。
@@ -22,7 +22,7 @@
 
 在64位服务器上运行应用程序，构建执行时，用 jmap -heap 11540 命令观察JVM堆内存状况如下：
 
-```
+```text
 Attaching to process ID 11540, please wait...
 Debugger attached successfully.
 Server compiler detected.
@@ -107,9 +107,9 @@ GC为了释放很小的空间却耗费了太多的时间，其原因一般有两
 
 jstat -gcutil:
 
-S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
+S0 S1 E O P YGC YGCT FGC FGCT GCT
 
-12.16 0.00 5.18 63.78 20.32  54   2.047 5     6.946  8.993
+12.16 0.00 5.18 63.78 20.32 54 2.047 5 6.946 8.993
 
 分析上面的数据，发现Young GC执行了54次，耗时2.047秒，每次Young GC耗时37ms，在正常范围，**而Full GC执行了5次，耗时6.946秒，每次平均1.389s，数据显示出来的问题是：Full GC耗时较长**，分析该系统的是指发现，NewRatio=9，也就是说，新生代和老生代大小之比为1:9，这就是问题的原因：
 
@@ -130,7 +130,7 @@ S0     S1    E     O       P        YGC YGCT FGC FGCT  GCT
 
 **实例3：**
 
-一应用在性能测试过程中，发现内存占用率很高，Full GC频繁，使用sudo -u admin -H  jmap -dump:format=b,file=文件名.hprof pid 来dump内存，生成dump文件，并使用Eclipse下的mat差距进行分析，发现：
+一应用在性能测试过程中，发现内存占用率很高，Full GC频繁，使用sudo -u admin -H jmap -dump:format=b,file=文件名.hprof pid 来dump内存，生成dump文件，并使用Eclipse下的mat差距进行分析，发现：
 
 ![](http://dl2.iteye.com/upload/attachment/0101/0370/a61f0f4e-9d89-35a9-b7c9-501b52b2de08.png)
 
@@ -165,18 +165,10 @@ password是可以自由定义的。
 修改Tomcat的/conf目录下面的server.xml文件，针对端口为8080的连接器添加如下参数：
 
 1. connectionTimeout：连接失效时间，单位为毫秒、默认为60s、这里设置为30s，如果用户请求在30s内未能进入请求队列，视为本次连接失败。
-
 2. keepAliveTimeout：连接的存活时间，默认和connectionTimeout一致，这里可以设为15s、这意味着15s之后本次连接关闭. 如果页面需要加载大量图片、js等静态资源，需要将参数适当调大一点、以免多次创建TCP连接。
-
 3. enableLookups：是否对连接到服务器的远程机器查询其DNS主机名，一般情况下这并不必要，因此设为false即可。
-
 4. URIEncoding：设置URL参数的编码格式为UTF-8编码，默认为ISO-8859-1编码。
-
 5. maxHttpHeaderSize：设置HTTP请求、响应的头部内容大小，默认为8192字节\(8k\)，此处设置为32768字节\(32k\)、和Nginx的设置保持一致。
-
 6. maxThreads：最大线程数、用于处理用户请求的线程数目，默认为200、此处设置为300
-
 7. acceptCount：用户请求等候队列的大小，默认为100、此处设置为200 Linux系统默认一个进程能够创建的最大线程数为1024、因此对高并发应用需要进行Linux内核调优，至此文件server.xml修改后的内容如下所示：吻 再次登录查看状态，
-
-
 

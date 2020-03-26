@@ -1,28 +1,30 @@
 # Benchmark压力测试
 
-### web性能测试：apache benchmark\(ab\)
+## Benchmark压力测试
+
+#### web性能测试：apache benchmark\(ab\)
 
 开发完网站或者web接口后，一个比较负责任的工作就是测试一下接口性能，也叫做压力测试。web接口性能直接反映了接口的并发处理能力，一个数值评估通常可以给系统性能给出一个比较好的反馈。
 
 本文介绍比较常用的web性能测试工具ab\(apache benchmark\)。
 
-# 安装 {#安装}
+## 安装 <a id="&#x5B89;&#x88C5;"></a>
 
 ab命令来源于apache工具包，ubuntu可以通过下面的命令安装：
 
-```
+```text
 sudo apt-get install apache2-utils
 ```
 
-# 用法 {#用法}
+## 用法 <a id="&#x7528;&#x6CD5;"></a>
 
-```
+```text
 ab -n 1000 -c 100 http://www.test.com/test/api
 ```
 
 如上所示，-n表示测试请求数目，-c表示并发度。测试结果显示如下：
 
-```
+```text
 This is ApacheBench, Version 2.3 <$Revision: 655654 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -86,9 +88,9 @@ Percentage of the requests served within a certain time (ms)
  100%   2650 (longest request)
 ```
 
-## ab命令选项参数 {#ab命令选项参数}
+### ab命令选项参数 <a id="ab&#x547D;&#x4EE4;&#x9009;&#x9879;&#x53C2;&#x6570;"></a>
 
-```
+```text
 -A auth-username:password
 为服务器提供BASIC身份验证凭据。用户名和密码由一个单独分隔，:并通过wire base64编码发送。无论服务器是否需要它，都会发送该字符串（即，已发送401认证）。
 -b windowsize
@@ -159,7 +161,7 @@ Cookie:在请求中添加一行。论证通常是一 对的形式。该字段是
 
 ab命令通常还有许多选项，列举一些常用的：
 
-```
+```text
 -t timelimit  测试时间限制，单位秒
 -s timeout    每个请求时间限制，单位秒
 -v verbosity  日志输出级别，可以选择1, 2等，调试使用
@@ -167,13 +169,13 @@ ab命令通常还有许多选项，列举一些常用的：
 -p postfile      POST请求发送的数据文件
 ```
 
-# 测试POST请求 {#测试post请求}
+## 测试POST请求 <a id="&#x6D4B;&#x8BD5;post&#x8BF7;&#x6C42;"></a>
 
 POST请求经常用到，在这里把用法写下来。
 
-## 以x-www-form-urlencoded形式发送 {#以x-www-form-urlencoded形式发送}
+### 以x-www-form-urlencoded形式发送 <a id="&#x4EE5;x-www-form-urlencoded&#x5F62;&#x5F0F;&#x53D1;&#x9001;"></a>
 
-```
+```text
 ab -n 1000 -c 100 -p post.txt -T 'application/x-www-form-urlencoded' http://www.test.com/test/api
 ```
 
@@ -181,7 +183,7 @@ ab -n 1000 -c 100 -p post.txt -T 'application/x-www-form-urlencoded' http://www.
 
 post.txt文件内容：
 
-```
+```text
 name=hello,world
 ```
 
@@ -189,15 +191,15 @@ name=hello,world
 
 经过摸索，发现可以通过multipart/form-data形式发送。
 
-## 以multipart/form-data形式发送 {#以multipartform-data形式发送}
+### 以multipart/form-data形式发送 <a id="&#x4EE5;multipartform-data&#x5F62;&#x5F0F;&#x53D1;&#x9001;"></a>
 
-```
+```text
 ab -n 1000 -c 100 -p post.txt -T 'multipart/form-data; boundary=--WebKitFormBoundaryE19zNvXGzXaLvS5C' http://www.test.com/test/api
 ```
 
 post.txt文件内容如下：
 
-```
+```text
 ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 Content-Disposition: form-data; name="name"
 
@@ -211,11 +213,9 @@ POST的文件内容可以通过postman测试接口来查看。
 
 参考文档：
 
-  ab参数介绍：[http://httpd.apache.org/docs/2.4/programs/ab.html](http://httpd.apache.org/docs/2.4/programs/ab.html)
+ab参数介绍：[http://httpd.apache.org/docs/2.4/programs/ab.html](http://httpd.apache.org/docs/2.4/programs/ab.html)
 
-  使用ab命令发送一个post请求：[http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server](http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server)
+使用ab命令发送一个post请求：[http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server](http://stackoverflow.com/questions/29731023/make-a-post-request-using-ab-apache-benchmarking-on-a-django-server)
 
-  同上：[http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab](http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab)
-
-
+同上：[http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab](http://stackoverflow.com/questions/20220270/posting-multipart-form-data-with-apache-bench-ab)
 

@@ -1,17 +1,17 @@
 # Tomcat调优篇实战
 
-* ## 优化内存
+* **优化内存**
 
 /bin/catalina.sh添加JAVA\_OPTS参数  
-** jdk1.7**
+ **jdk1.7**
 
-```
+```text
 JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1024m -XX:NewSize=512m -XX:MaxNewSize=1024M -XX:PermSize=1024m -XX:MaxPermSize=1024m -XX:+DisableExplicitGC"
 ```
 
 > 1.8版本中已经没有PermSize、MaxPermSize
 
-```
+```text
 JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1024m -XX:NewSize=512m -XX:MaxNewSize=1024M -XX:+DisableExplicitGC"
 ```
 
@@ -37,13 +37,13 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 >
 > -XX:+DisableExplicitGC：自动将System.gc\(\)调用转换成一个空操作，即应用中调用System.gc\(\)会变成一个空操作
 
-* ## 优化连接数
+* **优化连接数**
 
 ### 1）优化线程数
 
 在conf/server.xml找到Connectorport="8080" protocol="HTTP/1.1"，增加maxThreads和acceptCount属性（使acceptCount大于等于maxThreads），如下：
 
-```
+```text
 <Connectorport="8080" protocol="HTTP/1.1"connectionTimeout="20000" redirectPort="8443"acceptCount="500" maxThreads="400" />
 ```
 
@@ -61,7 +61,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 
 在conf/server.xml中增加executor节点，然后配置connector的executor属性，如下：
 
-```
+```text
 <Executorname="tomcatThreadPool" namePrefix="req-exec-"maxThreads="1000" minSpareThreads="50"maxIdleTime="60000"/>
 <Connectorport="8080" protocol="HTTP/1.1"executor="tomcatThreadPool"/>
 ```
@@ -70,7 +70,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 >
 > namePrefix：线程池中线程的命名前缀
 >
-> maxThreads：线程池的最大线程数  默认150
+> maxThreads：线程池的最大线程数 默认150
 >
 > minSpareThreads：线程池的最小空闲线程数 默认4
 >
@@ -86,7 +86,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 
 配置conf/server.xml
 
-```
+```text
 <Connector executor="tomcatThreadPool" port="8080" protocol="HTTP/1.1" connectionTimeout="20000" enableLookups="false" redirectPort="8443" URIEncoding="UTF-8" />
 ```
 
@@ -96,17 +96,16 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 
 配置conf/server.xml
 
-```
+```text
 <Connector executor="tomcatThreadPool" port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" connectionTimeout="20000" enableLookups="false" redirectPort="8443" URIEncoding="UTF-8" />
 ```
 
 * **apr：**安装起来最困难,但是从操作系统级别来解决异步的IO问题,大幅度的提高性能.
-
-* ## tomcat中**如何禁止和允许列目录下的文档 **
+* **tomcat中如何禁止和允许列目录下的文档**
 
 在{tomcat\_home}/conf/web.xml中，把listings参数配置成false即可，如下：
 
-```
+```text
 <servlet> 
 ... 
 <init-param> 
@@ -117,9 +116,9 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 </servlet>
 ```
 
-* ## tomcat中**如何禁止和允许主机或IP地址访问**
+* **tomcat中如何禁止和允许主机或IP地址访问**
 
-```
+```text
 <Host name="localhost" ...> 
   ... 
   <Valve className="org.apache.catalina.valves.RemoteHostValve" 
@@ -130,9 +129,9 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 </Host>
 ```
 
-* ## 一个真实有效的高并发Tomcat优化配置示例：
+* **一个真实有效的高并发Tomcat优化配置示例：**
 
-```
+```text
 <Executor name="tomcatThreadPool"        # 配置TOMCAT共享线程池，NAME为名称　
           namePrefix="HTTP-8088-exec-"    # 线程的名字前缀，用于标记线程名称
           prestartminSpareThreads="true"  # executor启动时，是否开启最小的线程数
@@ -143,7 +142,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
  />
 ```
 
-```
+```text
 <Connector port="8088" protocol="org.apache.coyote.http11.Http11NioProtocol"
    connectionTimeout="5000" redirectPort="443" proxyPort="443" executor="tomcatThreadPool"  
    URIEncoding="UTF-8"/> # 采用上面的共享线程池
@@ -153,7 +152,7 @@ JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1
 
 [http://tomcat.apache.org/tomcat-8.5-doc/config](http://tomcat.apache.org/tomcat-8.5-doc/config/index.html)
 
-[http://tomcat.apache.org/tomcat-8.0-doc/config](#)
+[http://tomcat.apache.org/tomcat-8.0-doc/config](tomcatdiao-you-pian.md)
 
-[http://tomcat.apache.org/tomcat-7.0-doc/config](#)
+[http://tomcat.apache.org/tomcat-7.0-doc/config](tomcatdiao-you-pian.md)
 

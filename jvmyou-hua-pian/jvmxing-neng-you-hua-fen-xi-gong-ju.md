@@ -25,11 +25,11 @@ Jconsole（Java Monitoring and Management Console）是从java5开始，在JDK�
 
 直接在jdk/bin目录下点击jconsole.exe即可启动，界面如下:
 
-![](/assets/import-jconsole.png)
+![](../.gitbook/assets/import-jconsole.png)
 
 在弹出的框中可以选择本机的监控本机的java应用，也可以选择远程的java服务来监控，如果监控远程服务需要在tomcat启动脚本中添加如下代码：
 
-```
+```text
 -Dcom.sun.management.jmxremote.port
 =6969  
 
@@ -45,37 +45,35 @@ false
 
 * 概述，以图表的方式显示出堆内存使用量，活动线程数，已加载的类，CUP占用率的折线图，可以非常清晰的观察在程序执行过程中的变动情况。
 
-![](/assets/import-jconsole-02.png)
+![](../.gitbook/assets/import-jconsole-02.png)
 
 * 内存，主要展示了内存的使用情况，同时可以查看堆和非堆内存的变化值对比，也可以点击执行GC来处罚GC的执行
 
-![](/assets/import-jconsole-03.png)
+![](../.gitbook/assets/import-jconsole-03.png)
 
 * 线程，主界面展示线程数的活动数和峰值，同时点击左下方线程可以查看线程的详细信息，比如线程的状态是什么，堆栈内容等，同时也可以点击“检测死锁”来检查线程之间是否有死锁的情况。
 
-![](/assets/import-jconsole-04.png)
+![](../.gitbook/assets/import-jconsole-04.png)
 
 * 类，主要展示已加载类的相关信息。
-
 * VM 概要，展示JVM所有信息总览，包括基本信息、线程相关、堆相关、操作系统、VM参数等。
-
 * Mbean,查看Mbean的属性，方法等。
 
-### VisualVM {#visualvm}
+### VisualVM <a id="visualvm"></a>
 
 **简介**
 
 VisualVM 是一个工具，它提供了一个可视界面，用于查看 Java 虚拟机 \(Java Virtual Machine, JVM\) 上运行的基于 Java 技术的应用程序（Java 应用程序）的详细信息。VisualVM 对 Java Development Kit \(JDK\) 工具所检索的 JVM 软件相关数据进行组织，并通过一种使您可以快速查看有关多个 Java 应用程序的数据的方式提供该信息。您可以查看本地应用程序以及远程主机上运行的应用程序的相关数据。此外，还可以捕获有关 JVM 软件实例的数据，并将该数据保存到本地系统，以供后期查看或与其他用户共享。
 
-![](/assets/import-jvisualvm-01.png)
+![](../.gitbook/assets/import-jvisualvm-01.png)
 
 _**VisualVM 是javajdk自带的最牛逼的调优工具了吧**_，也是我平时使用最多调优工具，几乎涉及了jvm调优的方方面面。同样是在jdk/bin目录下面双击jvisualvm.exe既可使用，启动起来后和jconsole 一样同样可以选择本地和远程，如果需要监控远程同样需要配置相关参数，主界面如下；
 
-![](/assets/import-jvisualvm.png)
+![](../.gitbook/assets/import-jvisualvm.png)
 
 VisualVM可以根据需要安装不同的插件，每个插件的关注点都不同，有的主要监控GC，有的主要监控内存，有的监控线程等。
 
-![](/assets/import-jvisualvm-02.png)
+![](../.gitbook/assets/import-jvisualvm-02.png)
 
 如何安装：
 
@@ -105,9 +103,9 @@ Visual GC 是常常使用的一个功能，可以明显的看到年轻代、老�
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/jvisualvm07.jpg)
 
-## 第三方调优工具 {#第三方调优工具}
+## 第三方调优工具 <a id="&#x7B2C;&#x4E09;&#x65B9;&#x8C03;&#x4F18;&#x5DE5;&#x5177;"></a>
 
-### MAT {#mat}
+### MAT <a id="mat"></a>
 
 **MAT是什么？**
 
@@ -136,7 +134,6 @@ MAT以eclipse 插件的形式来安装，具体的安装过程就不在描述了
 ![](http://www.ityouknow.com/assets/images/2017/jvm/mat04.jpg)
 
 * duplicate classes ：检测由多个类装载器加载的类
-
 * Leak Suspects ：内存泄漏分析
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/mat05.jpg)
@@ -149,7 +146,7 @@ MAT以eclipse 插件的形式来安装，具体的安装过程就不在描述了
 
 以上只是一个初级的介绍，mat还有更强大的使用，比如对比堆内存，在生产环境中往往为了定位问题，每隔几分钟dump出一下内存快照，随后在对比不同时间的堆内存的变化来发现问题。
 
-### GChisto {#gchisto}
+### GChisto <a id="gchisto"></a>
 
 GChisto是一款专业分析gc日志的工具，可以通过gc日志来分析：Minor GC、full gc的时间、频率等等，通过列表、报表、图表等不同的形式来反应gc的情况。虽然界面略显粗糙，但是功能还是不错的。
 
@@ -162,14 +159,13 @@ GChisto是一款专业分析gc日志的工具，可以通过gc日志来分析：
 ![](http://www.ityouknow.com/assets/images/2017/jvm/g2.jpg)
 
 * GC Pause Distribution:查看GC停顿的详细分布，x轴表示垃圾收集停顿时间，y轴表示是停顿次数。
-
 * GC Timeline：显示整个时间线上的垃圾收集
 
 ![](http://www.ityouknow.com/assets/images/2017/jvm/g3.jpg)
 
 不过这款工具已经不再维护，不能识别最新jdk的日志文件。
 
-### gcviewer {#gcviewer}
+### gcviewer <a id="gcviewer"></a>
 
 GCViewer也是一款分析小工具，用于可视化查看由Sun / Oracle, IBM, HP 和 BEA Java 虚拟机产生的垃圾收集器的日志，gcviewer个人感觉显示 的界面比较乱没有GChisto更专业一些。
 

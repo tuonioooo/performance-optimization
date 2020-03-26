@@ -1,8 +1,8 @@
 # JVM性能调优——理论篇
 
-### ![](/assets/import-optimize.png)
+## ![](../.gitbook/assets/import-optimize.png)
 
-### 一、JVM何时会抛出OutOfMemoryException？
+## 一、JVM何时会抛出OutOfMemoryException？
 
 * JVM98%的时间都花费在内存回收
 * 每次回收的内存小于2%
@@ -11,7 +11,7 @@
 
 > **注意：并不是内存被耗空的时候才抛出**
 
-### 二、内存泄漏及解决方法
+## 二、内存泄漏及解决方法
 
 1.系统崩溃前的一些现象：
 
@@ -55,7 +55,7 @@ Q:为什么年老代占用的内存越来越大？
 
 A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 
-### 三、性能调优
+## 三、性能调优
 
 除了上述内存泄漏外，我们还发现CPU长期不足3%，系统吞吐量不够，针对8core×16G、64bit的Linux服务器来说，是严重的资源浪费。
 
@@ -66,7 +66,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 * **JVM启动参数**：调整各代的内存比例和垃圾回收算法，提高吞吐量
 * **程序算法**：改进程序逻辑算法提高性能
 
-**  1.Java线程池（java.util.concurrent.ThreadPoolExecutor）**
+ **1.Java线程池（java.util.concurrent.ThreadPoolExecutor）**
 
 大多数JVM6上的应用采用的线程池都是JDK自带的线程池，之所以把成熟的Java线程池进行罗嗦说明，是因为该线程池的行为与我们想象的有点出入。Java线程池有几个重要的配置参数：
 
@@ -78,9 +78,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
   Java线程池需要传入一个Queue参数（workQueue）用来存放执行的任务，而对Queue的不同选择，线程池有完全不同的行为：
 
 * SynchronousQueue： 一个无容量的等待队列，一个线程的insert操作必须等待另一线程的remove操作，采用这个Queue线程池将会为每个任务分配一个新线程
-
 * LinkedBlockingQueue ： 无界队列，采用该Queue，线程池将忽略 maximumPoolSize参数，仅用corePoolSize的线程处理所有的任务，未处理的任务便在LinkedBlockingQueue中排队
-
 * ArrayBlockingQueue： 有界队列，在有界队列和 maximumPoolSize的作用下，程序将很难被调优：更大的Queue和小的maximumPoolSize将导致CPU的低负载；小的Queue和大的池，Queue就没起动应有的作用。
 
 其实我们的要求很简单，希望线程池能跟连接池一样，能设置最小线程数、最大线程数，当最小数&lt;任务&lt;最大数时，应该分配新的线程处理；当任务&gt;最大数时，应该等待有空闲线程再处理该任务。
@@ -92,7 +90,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 * 以SynchronousQueue作为参数，使maximumPoolSize发挥作用，以防止线程被无限制的分配，同时可以通过提高maximumPoolSize来提高系统吞吐量
 * 自定义一个RejectedExecutionHandler，当线程数超过maximumPoolSize时进行处理，处理方式为隔一段时间检查线程池是否可以执行新Task，如果可以把拒绝的Task重新放入到线程池，检查的时间依赖keepAliveTime的大小。
 
-**  2.连接池（org.apache.commons.dbcp.BasicDataSource）**
+ **2.连接池（org.apache.commons.dbcp.BasicDataSource）**
 
 在使用org.apache.commons.dbcp.BasicDataSource的时候，因为之前采用了默认配置，所以当访问量大时，通过JMX观察到很多Tomcat线程都阻塞在BasicDataSource使用的Apache ObjectPool的锁上，直接原因当时是因为BasicDataSource连接池的最大连接数设置的太小，默认的BasicDataSource配置，仅使用8个最大连接。
 
@@ -106,7 +104,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 * maxIdle：最大空闲数，当连接使用完毕后发现连接数大于maxIdle，连接将被直接关闭。只有initialSize &lt;x &lt;maxIdle的连接将被定期检测是否超期。这个参数主要用来在峰值访问时提高吞吐量。
 * initialSize是如何保持的？经过研究代码发现，BasicDataSource会关闭所有超期的连接，然后再打开initialSize数量的连接，这个特性与minEvictableIdleTimeMillis、timeBetweenEvictionRunsMillis一起保证了所有超期的initialSize连接都会被重新连接，从而避免了Mysql长时间无动作会断掉连接的问题。
 
-**  3.JVM参数**
+ **3.JVM参数**
 
 在JVM启动参数中，可以设置跟内存、垃圾回收相关的一些参数设置，默认情况不做任何设置JVM会工作的很好，但对一些配置很好的Server和具体的应用必须仔细调优才能获得最佳性能。通过设置我们希望达到一些目标：
 
@@ -117,14 +115,12 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
   前两个目前是相悖的，要想GC时间小必须要一个更小的堆，要保证GC次数足够少，必须保证一个更大的堆，我们只能取其平衡。
 
   （1）针对JVM堆的设置，一般可以通过-Xms -Xmx限定其最小、最大值，**为了防止垃圾收集器在最小、最大之间收缩堆而产生额外的时间，我们通常把最大、最小设置为相同的值**  
-   （2）**年轻代和年老代将根据默认的比例（1：2）分配堆内存**，可以通过调整二者之间的比率NewRadio来调整二者之间的大小，也可以针对回收代，比如年轻代，通过 -XX:newSize -XX:MaxNewSize来设置其绝对大小。同样，为了防止年轻代的堆收缩，我们通常会把-XX:newSize -XX:MaxNewSize设置为同样大小
+  （2）**年轻代和年老代将根据默认的比例（1：2）分配堆内存**，可以通过调整二者之间的比率NewRadio来调整二者之间的大小，也可以针对回收代，比如年轻代，通过 -XX:newSize -XX:MaxNewSize来设置其绝对大小。同样，为了防止年轻代的堆收缩，我们通常会把-XX:newSize -XX:MaxNewSize设置为同样大小
 
   （3）年轻代和年老代设置多大才算合理？这个我问题毫无疑问是没有答案的，否则也就不会有调优。我们观察一下二者大小变化有哪些影响
 
 * **更大的年轻代必然导致更小的年老代，大的年轻代会延长普通GC的周期，但会增加每次GC的时间；小的年老代会导致更频繁的Full GC**
-
 * **更小的年轻代必然导致更大年老代，小的年轻代会导致普通GC很频繁，但每次的GC时间会更短；大的年老代会减少Full GC的频率**
-
 * 如何选择应该依赖应用程序  
   **对象生命周期的分布情况**  
   ：如果应用存在大量的临时对象，应该选择更大的年轻代；如果存在相对较多的持久对象，年老代应该适当增大。但很多应用都没有这样明显的特性，在抉择时应该根据以下两点：（A）本着Full GC尽量少的原则，让年老代尽量缓存常用对象，JVM的默认比例1：2也是这个道理 （B）通过观察应用一段时间，看其他在峰值时年老代会占多少内存，在不影响Full GC的前提下，根据实际情况加大年轻代，比如可以把比例控制在1：1。但应该给年老代至少预留1/3的增长空间
@@ -136,11 +132,8 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
   （4）可以通过下面的参数打Heap Dump信息
 
 * -XX:HeapDumpPath
-
 * -XX:+PrintGCDetails
-
 * -XX:+PrintGCTimeStamps
-
 * -Xloggc:/usr/aaa/dump/heap\_trace.txt
 
   通过下面参数可以控制OutOfMemoryError时打印堆的信息
@@ -157,7 +150,7 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 
 4.程序算法调优：本次不作为重点
 
-### 四、**调优方法的原则**
+## 四、**调优方法的原则**
 
 1、多数的Java应用不需要在服务器上进行GC优化；
 
@@ -173,15 +166,15 @@ A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代
 
 7、在实际使用中，分析GC情况优化代码比优化GC参数要多得多；
 
-### **五、GC优化的目的有两个**
+## **五、GC优化的目的有两个**
 
 **1、将转移到老年代的对象数量降低到最小；**
 
 **2、减少full GC的执行时间；**
 
-为了达到上面的目的，一般地，你需要做的事情有：[详细垃圾回收机制](/jvmyou-hua-pian/xiang-xi-la-ji-hui-shou-ji-zhi.md)——减少GC开销的措施
+为了达到上面的目的，一般地，你需要做的事情有：[详细垃圾回收机制](xiang-xi-la-ji-hui-shou-ji-zhi.md)——减少GC开销的措施
 
-### JVM参数总结
+## JVM参数总结
 
 Xms 是指设定程序启动时占用内存大小。一般来讲，大点，程序会启动的快一点，但是也可能会导致机器暂时间变慢。
 
@@ -191,7 +184,7 @@ Xss 是指设定每个线程的堆栈大小。这个就要依据你的程序，�
 
 以上三个参数的设置都是默认以Byte为单位的，也可以在数字后面添加\[k/K\]或者\[m/M\]来表示KB或者MB。而且，超过机器本身的内存大小也是不可以的，否则就等着机器变慢而不是程序变慢了。
 
-> ```
+> ```text
 > -Xms 为jvm启动时分配的内存，比如-Xms200m，表示分配200M
 > -Xmx 为jvm运行过程中分配的最大内存，比如-Xms500m，表示jvm进程最多只能够占用500M内存
 > -Xss 为jvm启动的每个线程分配的内存大小，默认JDK1.4中是256K，JDK1.5+中是1M
@@ -203,7 +196,7 @@ Total Memory -Xms -Xmx -Xss Spare Memory JDK Thread Count
 
 上面的表格只是大致的估计了下在特定内存条件下可以在java中创建的最大线程数。随着-Xmx的加大，空闲的内存数就更少，那么可以创建的线程也就更少，同时在JDK1.4和1.5版本不同下，可创建的线程数也会根据每个线程的内存大小不同而不同。
 
-```
+```text
 其实只要我们了解了JVM的内存大小指定以及java中线程的内存模型，基本上我们就可以很好的控制如何在java中使用线程和避免内存溢出或错误的问题了。
 
 最近在网上看到一些人讨论到java.lang.Runtime类中的 freeMemory(), totalMemory(), maxMemory()这几个方法的一些问题，很多人感到很疑惑，为什么，在java程序刚刚启动起来的时候freeMemory()这个方法返回的只有一两兆字节，而随着java程序往前运行，创建了不少的对象，freeMemory()这个方法的返回有时候不但没有减少，反而会增加。这些人对 freeMemory()这个方法的意义应该有一些误解，他们认为这个方法返回的是操作系统的剩余可用内存，其实根本就不是这样的。这三个方法反映的都是 java这个进程的内存情况，跟操作系统的内存根本没有关系。下面结合totalMemory(), maxMemory()一起来解释。
@@ -319,6 +312,4 @@ JVM提供了大量命令行参数，打印信息，供调试使用。主要有�
         -XX:+CMSIncrementalMode :设置为增量模式。适用于单CPU情况。
         -XX:ParallelGCThreads=n :设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。
 ```
-
-
 
