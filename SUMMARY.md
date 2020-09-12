@@ -8,6 +8,7 @@
   * [详细垃圾回收机制](jvmyou-hua-pian/xiang-xi-la-ji-hui-shou-ji-zhi.md)
   * [常见的垃圾回收器有那些](jvmyou-hua-pian/chang-jian-de-la-ji-hui-shou-qi-you-na-xie.md)
   * [JVM性能调优以及配置](jvmyou-hua-pian/jvm-xing-neng-tiao-you-yi-ji-pei-zhi/README.md)
+    * [JVM性能调优——案例](jvmyou-hua-pian/jvm-xing-neng-tiao-you-yi-ji-pei-zhi/jvm-xing-neng-tiao-you-an-li.md)
     * [JVM性能调优——理论篇](jvmyou-hua-pian/jvm-xing-neng-tiao-you-yi-ji-pei-zhi/jvmxing-neng-diao-you-2014-2014-li-lun-pian.md)
     * [JVM性能调优——实战篇](jvmyou-hua-pian/jvm-xing-neng-tiao-you-yi-ji-pei-zhi/jvmxing-neng-diao-you-2014-2014-shi-zhan-pian.md)
     * [JVM性能优化分析工具](jvmyou-hua-pian/jvm-xing-neng-tiao-you-yi-ji-pei-zhi/jvmxing-neng-you-hua-fen-xi-gong-ju.md)
