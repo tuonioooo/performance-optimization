@@ -19,6 +19,7 @@
   * [Tomcat WebappClassLoader 类加载机制源码分析](jvmyou-hua-pian/tomcat-webappclassloader-lei-jia-zai-ji-zhi-yuan-ma-fen-xi.md)
 * [SQL优化篇](sqlyou-hua-pian/README.md)
   * [MySQL优化篇](sqlyou-hua-pian/mysqlyou-hua-pian/README.md)
+    * [Mysql如何避免回表查询？什么是索引覆盖？](sqlyou-hua-pian/mysqlyou-hua-pian/mysql-ru-he-bi-mian-hui-biao-cha-xun-shen-me-shi-suo-yin-fu-gai.md)
     * [数据库存储的引擎分析](sqlyou-hua-pian/mysqlyou-hua-pian/shu-ju-ku-cun-chu-de-yin-qing-fen-xi.md)
     * [详解索引及优化](sqlyou-hua-pian/mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/README.md)
       * [索引优缺点](sqlyou-hua-pian/mysqlyou-hua-pian/xiang-jie-suo-yin-ji-you-hua/suo-yin-you-que-dian.md)
